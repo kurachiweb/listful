@@ -32,8 +32,6 @@ To write a new post, create a new `.mdx` file in the `src/markdown/posts` direct
 
 Update the front-matter for the post with its title, excerpt, cover image and the publication date. 
 
-You can mark a post as a draft by adding `draft: true` to the front matter of the post and then it will only display in the local dev environment.
-
 #### Title
 
 The title will appear at the top of the post and will be used in the meta tags for the page.

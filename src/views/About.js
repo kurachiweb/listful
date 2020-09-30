@@ -1,15 +1,18 @@
-import { MDXProvider } from "@mdx-js/react"
-import MarkdownContent from "../mdx/about.mdx"
-import Container from "../ui/Container"
+import { MDXProvider } from '@mdx-js/react';
+import MarkdownContent from '../mdx/about.mdx';
+import ArticleInfo from '../ui/ArticleInfo';
 
-const About = (props) => {
+const About = ({ post }) => {
   return (
-    <MDXProvider>
-      <Container>
-        <MarkdownContent />
-      </Container>
-    </MDXProvider>
-  )
-}
+    <>
+      <ArticleInfo post={post} />
+      <article className="article">
+        <MDXProvider>
+          <MarkdownContent />
+        </MDXProvider>
+      </article>
+    </>
+  );
+};
 
-export default About
+export default About;

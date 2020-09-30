@@ -1,0 +1,79 @@
+---
+title: '演算子の優先順位'
+excerpt: 'JavaScriptの演算子には、優先順位があります。思わぬ計算バグを引き起こさないためにご覧ください。'
+category: 'JavaScript'
+coverImage: '/img/blog/hello-world.jpg'
+coverImageAlt: 'Example Cover Image'
+coverImageWidth: 960
+coverImageHeight: 480
+date: '2020-09-29T05:35:07.322Z'
+---
+
+JavaScriptの演算子の優先順位
+
+| 優先順位 | 文法 | 例 |
+| --- | --- | --- |
+| 21 | `( ___ )` | `(expr1) * expr2` |
+| 20 | `___ . ___` | `obj.prop` |
+| | `___ ?. ___` | `obj?.prop` |
+| | `___ [ __ ]` | `array[numstr]` |
+| | `___ ( ___ )` | `func(param)` |
+| | `new ___ ( ___ )` | `new func(param)` |
+| 19 | `new ___ ( ___ )` | `new func(param)` |
+| 18 | `___ ++` | `expr ++` |
+| | `___ --` | `expr --` |
+| 17 | `! ___` | `! expr` |
+| | `~ ___` | `~ expr` |
+| | `+ ___` | `+ expr` |
+| | `- ___` | `- expr` |
+| | `++ ___` | `++ expr` |
+| | `-- ___` | `-- expr` |
+| | `typeof ___` | `typeof expr` |
+| | `void ___` | `void expr` |
+| | `delete ___` | `delete obj.prop` |
+| | `await ___` | `await Promise` |
+| 16 | `___ ** ___` | `num1 ** num2` |
+| 15 | `___ * ___` | `num1 * num2` |
+| | `___ / ___` | `num1 / num2` |
+| | `___ % ___` | `expr1 % expr2` |
+| 14 | `___ + ___` | `expr1 + expr2` |
+| | `___ - ___` | `expr1 - expr2` |
+| 13 | `___ << ___` | `num1 << num2` |
+| | `___ >> ___` | `num1 >> num2` |
+| | `___ >>> ___` | `num1 >>> num2` |
+| 12 | `___ < ___` | `num1 < num2` |
+| | `___ < ___` | `num1 < num2` |
+| | `___ <= ___` | `num1 <= num2` |
+| | `___ > ___` | `num1 > num2` |
+| | `___ >= ___` | `num1 >= num2` |
+| | `___ in ___` | `prop in obj` |
+| | `___ instanceof ___` | `obj instanceof constructor` |
+| 11 | `___ === ___` | `expr === expr` |
+| | `___ !== ___` | `expr !== expr` |
+| | `___ == ___` | `expr == expr` |
+| | `___ != ___` | `expr != expr` |
+| 10 | `___ & ___` | `num1 & num2` |
+| 9 | `___ ^ ___` | `num1 ^ num2` |
+| 8 | `___ | ___` | `num1 | num2` |
+| 7 | `___ && ___` | `expr1 && expr2` |
+| 6 | `___ || ___` | `expr1 || expr2` |
+| 5 | `___ ?? ___` | `expr1 ?? expr2` |
+| 4 | `___ ? ___ : ___` | `expr ? ifTrue : ifFalse` |
+| 3 | `___ = ___` | `variable = expr` |
+| | `___ += ___` | `variable = expr` |
+| | `___ -= ___` | `variable = expr` |
+| | `___ **= ___` | `variable = expr` |
+| | `___ *= ___` | `variable = expr` |
+| | `___ /= ___` | `variable = expr` |
+| | `___ %= ___` | `variable = expr` |
+| | `___ <<= ___` | `variable = expr` |
+| | `___ >>= ___` | `variable = expr` |
+| | `___ >>>= ___` | `variable = expr` |
+| | `___ &= ___` | `variable = expr` |
+| | `___ ^= ___` | `variable = expr` |
+| | `___ |= ___` | `variable = expr` |
+| | `___ &&= ___` | `variable = expr` |
+| | `___ ||= ___` | `variable = expr` |
+| 2 | `yield ___` | `variable = yield expr` |
+| | `yield* ___` | `yield* expr` |
+| 1 | `___ , ___` | `expr1, expr2, expr3` |

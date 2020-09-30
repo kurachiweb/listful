@@ -1,37 +1,41 @@
-import { useEffect, useState } from "react"
-import { Box, useColorMode } from "theme-ui"
-import Button from "./Button"
+import React, { Component } from 'react';
 
-const ThemeToggle = (props) => {
-  const [colorMode, setColorMode] = useColorMode()
-  const [opacity, setOpacity] = useState(0)
+class ThemeToggle extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      theme: typeof window !== 'undefined' ? localStorage.getItem('site_theme') : 'default'
+    };
+  }
 
-  useEffect(() => {
-    // fade in animation
-    setOpacity(1)
-  }, [])
+  themeSet() {
+    let theme = this.state.theme;
+    theme = theme === 'default' ? 'dark' : 'default';
+    this.setState({ theme }, () => {
+      localStorage.setItem('site_theme', theme);
+      if (theme === 'default') {
+        document.documentElement.classList.remove('t_dark');
+      } else {
+        document.documentElement.classList.add('t_dark');
+      }
+    });
+  }
 
-  return (
-    <Box
-      sx={{
-        p: 3,
-        position: "absolute",
-        top: 0,
-        right: 0,
-        opacity,
-        transition: "opacity .25s ease-in-out",
-      }}
-    >
-      <Button
-        sx={{ bg: "gray", py: 1, px: 2, fontSize: 0 }}
-        onClick={(e) => {
-          setColorMode(colorMode === "default" ? "dark" : "default")
-        }}
-      >
-        switch to {colorMode === "default" ? "dark" : "light"} mode
-      </Button>
-    </Box>
-  )
+  render() {
+    if (this.state.theme === 'dark') {
+      document.documentElement.classList.add('t_dark');
+    }
+    return (
+      <div className="theme_toggler__wrap">
+        <input type="checkbox" id="theme_toggler__btn" defaultChecked={this.state.theme === 'dark'} onClick={() => this.themeSet()} />
+        <label className="l_flex theme_toggler__label" htmlFor="theme_toggler__btn">
+          <i className="icon icon__theme_default"></i>
+          <i className="icon icon__theme_dark"></i>
+          <div className="theme_toggler__handle"></div>
+        </label>
+      </div>
+    );
+  }
 }
 
-export default ThemeToggle
+export default ThemeToggle;

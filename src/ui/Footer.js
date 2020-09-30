@@ -1,27 +1,17 @@
-import { Box, Text } from "theme-ui"
+import Link from 'next/link';
+import config from '../../blog.config';
 
-const Footer = (props) => (
-  <Box
-    sx={{
-      p: 4,
-      color: "#666",
-      textAlign: "center",
-      fontSize: 1,
-    }}
-  >
-    <Text sx={{ mx: 3, display: "inline-block" }}>
-      Created by <a href="https://johnpolacek">John Polacek</a>
-    </Text>
-    <Text sx={{ mx: 3, display: "inline-block" }}>
-      Open sourced on{" "}
-      <a href="https://github.com/johnpolacek/nextjs-mdx-blog-starter">
-        Github
-      </a>
-    </Text>
-    <Text sx={{ mx: 3, display: "inline-block" }}>
-      Follow <a href="https://twitter.com/johnpolacek">@johnpolacek</a>
-    </Text>
-  </Box>
-)
+const Footer = props => (
+  <footer className="footer_wrap">
+    <div className="l_in">
+      <Link href="/about">
+        <a>このサイトについて</a>
+      </Link>
+      <small className="l_in copyright">
+        &copy; {new Date(config.startDate).getFullYear()} {config.author}
+      </small>
+    </div>
+  </footer>
+);
 
-export default Footer
+export default Footer;

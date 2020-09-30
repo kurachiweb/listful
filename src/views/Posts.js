@@ -1,67 +1,23 @@
-import MDX from "@mdx-js/runtime"
-import { Flex, Box, Heading, Text, Image } from "theme-ui"
-import Container from "../ui/Container"
-import DraftBadge from "../ui/DraftBadge"
-import Link from "next/link"
+import Link from 'next/link';
 
-const Posts = ({ posts, prevPosts, nextPosts }) => {
-  const isLocal = process.env.NODE_ENV === "development"
-
+const Posts = ({ posts }) => {
   return (
-    <Container>
+    <ul className="list_no_buret article_links">
       {posts &&
-        posts
-          .filter((post) => {
-            return isLocal || !post.draft
-          })
-          .map((post) => (
-            <Box sx={{ pb: 5 }} key={post.slug}>
-              <Heading sx={{ pb: 2, position: "relative" }}>
-                {post.draft && <DraftBadge />}
-                <Link href={"/" + post.slug} passHref>
-                  <a>{post.title}</a>
-                </Link>
-              </Heading>
-              {post.coverImage && (
-                <Image
-                  sx={{
-                    mt: 2,
-                    mb: 3,
-                    border: "1px solid",
-                    borderColor: "rgba(0,0,0,.1)",
-                  }}
-                  height={post.coverImageHeight}
-                  width={post.coverImageWidth}
-                  src={post.coverImage}
-                  alt={post.coverImageAlt || ""}
-                />
-              )}
-              <Box sx={{ pb: 3 }}>
-                <MDX>{post.excerpt}</MDX>
-              </Box>
-              <Link href={"/" + post.slug} passHref>
-                <a>Read more...</a>
-              </Link>
-            </Box>
-          ))}
-      <Flex sx={{ fontStyle: "italic" }}>
-        <Box sx={{ width: "50%", py: 3, textAlign: "left" }}>
-          {prevPosts !== null && (
-            <Link href={"/blog/" + prevPosts} passHref>
-              <a>« see newer posts</a>
+        posts.map(post => (
+          <li className="article_link" key={post.slug}>
+            <Link href={`/category/${post.category.toLowerCase()}`}>
+              <a className="article_link_category">{post.category}</a>
             </Link>
-          )}
-        </Box>
-        <Box sx={{ width: "50%", py: 3, pr: 3, textAlign: "right" }}>
-          {nextPosts !== null && (
-            <Link href={"/blog/" + nextPosts} passHref>
-              <a>see older posts »</a>
+            <Link href="/article/[slug]" as={`/article/${post.slug}`}>
+              <a className="l_flex weak_shadow article_link_target">
+                <h2 className="article_link_title">{post.title}</h2>
+              </a>
             </Link>
-          )}
-        </Box>
-      </Flex>
-    </Container>
-  )
-}
+          </li>
+        ))}
+    </ul>
+  );
+};
 
-export default Posts
+export default Posts;

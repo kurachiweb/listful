@@ -1,42 +1,32 @@
-import config from "../blog.config"
-import Wrapper from "../src/layout/Wrapper"
-import Posts from "../src/views/Posts"
-import { getAllPosts } from "../src/api"
+import config from '../blog.config';
+import Wrapper from '../src/layout/Wrapper';
+import Posts from '../src/views/Posts';
+import Pagination from '../src/ui/Pagination';
+import { getAllPosts } from '../src/api';
 
-const PostsPage = ({ posts, prevPosts, nextPosts }) => (
-  <Wrapper
-    url="/"
-    title={config.title}
-    description={config.description}
-    imageUrl={config.shareImage}
-    imageAlt={config.shareImageAlt}
-  >
-    <Posts posts={posts} prevPosts={prevPosts} nextPosts={nextPosts} />
+const IndexPage = ({ posts, categories, pageIndex, numPages }) => (
+  <Wrapper url="/" title={`${config.title} - ${config.subtitle}`} description={config.description} categories={categories} imageUrl={config.shareImage} imageAlt={config.shareImageAlt}>
+    <Posts posts={posts} />
+    <Pagination pageIndex={pageIndex} numPages={numPages} />
   </Wrapper>
-)
+);
 
 export async function getStaticProps() {
-  const posts = getAllPosts([
-    "title",
-    "date",
-    "slug",
-    "author",
-    "coverImage",
-    "coverImageAlt",
-    "coverImageHeight",
-    "coverImageWidth",
-    "excerpt",
-    "draft",
-  ])
+  const posts = getAllPosts(['title', 'date', 'slug', 'author', 'category', 'coverImage', 'coverImageAlt', 'coverImageHeight', 'coverImageWidth', 'excerpt']);
+  const categories = posts.map(post => post.category).filter((cat, i, arr) => arr.indexOf(cat) === i);
 
-  const startIndex = 0
-  const endIndex = config.postsPerPage
-  const prevPosts = null
-  const nextPosts = endIndex >= posts.length ? null : 2
+  const startIndex = 0;
+  const endIndex = config.postsPerPage;
+  const numPages = Math.ceil(posts.length / config.postsPerPage);
 
   return {
-    props: { posts: posts.slice(startIndex, endIndex), prevPosts, nextPosts },
-  }
+    props: {
+      posts: posts.slice(startIndex, endIndex),
+      categories: categories,
+      pageIndex: 0,
+      numPages
+    }
+  };
 }
 
-export default PostsPage
+export default IndexPage;

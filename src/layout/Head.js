@@ -1,8 +1,8 @@
-import Head from "next/head"
-import PropTypes from "prop-types"
-import config from "../../blog.config"
+import Head from 'next/head';
+import PropTypes from 'prop-types';
+import config from '../../blog.config';
 
-const DocHead = (props) => (
+const DocHead = props => (
   <>
     <Head>
       <title>{props.title}</title>
@@ -12,27 +12,18 @@ const DocHead = (props) => (
       <meta property="og:title" content={props.title} />
       <meta property="og:description" content={props.description} />
       {props.imageUrl && <meta property="og:image" content={props.imageUrl} />}
-      {props.imageAlt && (
-        <meta property="og:image:alt" content={props.imageAlt} />
-      )}
+      {props.imageAlt && <meta property="og:image:alt" content={props.imageAlt} />}
       <meta property="og:url" content={props.url} />
-      <meta
-        name="twitter:card"
-        content={props.imageUrl ? "summary_large_image" : "summary"}
-      />
+      <meta name="twitter:card" content={props.imageUrl ? 'summary_large_image' : 'summary'} />
       <meta name="twitter:site" content={config.twitter} />
       <meta name="twitter:creator" content={config.twitter} />
       <meta name="twitter:title" content={props.title} />
       <meta name="twitter:description" content={props.description} />
-      {props.imageUrl && (
-        <meta property="twitter:image" content={props.imageUrl} />
-      )}
-      {props.imageAlt && (
-        <meta property="twitter:image:alt" content={props.imageAlt} />
-      )}
+      {props.imageUrl && <meta property="twitter:image" content={props.imageUrl} />}
+      {props.imageAlt && <meta property="twitter:image:alt" content={props.imageAlt} />}
     </Head>
   </>
-)
+);
 
 DocHead.propTypes = {
   title: PropTypes.string.isRequired,
@@ -40,7 +31,7 @@ DocHead.propTypes = {
   url: PropTypes.string.isRequired,
   imageUrl: PropTypes.string,
   imageAlt: PropTypes.string,
-  twitter: PropTypes.string,
-}
+  twitter: PropTypes.string
+};
 
-export default DocHead
+export default DocHead;

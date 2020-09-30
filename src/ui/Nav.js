@@ -1,25 +1,26 @@
-import { useRouter } from "next/router"
-import { Box } from "theme-ui"
-import NavLink from "./NavLink"
+import Link from 'next/link';
 
-const Nav = (props) => {
-  const router = useRouter()
-  return (
-    <Box
-      as="nav"
-      sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
-    >
-      <NavLink
-        href="/"
-        active={router.pathname === "/" || router.pathname.includes("/blog")}
-      >
-        Blog
-      </NavLink>
-      <NavLink href="/about" active={router.pathname === "/about"}>
-        About
-      </NavLink>
-    </Box>
-  )
-}
+const categoryFormat = category => category.toLowerCase().replace(' ', '-');
 
-export default Nav
+const Nav = ({ categories }) => (
+  <nav className="g_nav_wrap">
+    <input type="checkbox" id="g_nav_ctrl" aria-hidden="true" />
+    <label htmlFor="g_nav_ctrl" className="g_nav_label" aria-controls="g_nav" aria-expanded="true" aria-hidden="true">
+      Category
+      <i className="icon icon__g_nav_ctrl" />
+    </label>
+    {categories && (
+      <ul id="g_nav" className="list_no_buret" aria-hidden="false">
+        {categories.map(category => (
+          <li key={categoryFormat(category)}>
+            <Link href="/category/[category]" as={`/category/${categoryFormat(category)}`}>
+              <a className="g_nav_item">{category}</a>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    )}
+  </nav>
+);
+
+export default Nav;
