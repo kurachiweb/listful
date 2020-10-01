@@ -2,10 +2,10 @@
 title: '演算子の優先順位'
 excerpt: 'JavaScriptの演算子には、優先順位があります。思わぬ計算バグを引き起こさないためにご覧ください。'
 category: 'JavaScript'
-coverImage: '/img/blog/hello-world.jpg'
+coverImage: '/img/operator-precedence-ogp.png'
 coverImageAlt: 'Example Cover Image'
-coverImageWidth: 960
-coverImageHeight: 480
+coverImageWidth: 1200
+coverImageHeight: 630
 date: '2020-09-29T05:35:07.322Z'
 ---
 
@@ -54,26 +54,26 @@ JavaScriptの演算子の優先順位
 | | `___ != ___` | `expr != expr` |
 | 10 | `___ & ___` | `num1 & num2` |
 | 9 | `___ ^ ___` | `num1 ^ num2` |
-| 8 | `___ | ___` | `num1 | num2` |
+| 8 | `___ &#x7c; ___` | `num1 &#x7c; num2` |
 | 7 | `___ && ___` | `expr1 && expr2` |
-| 6 | `___ || ___` | `expr1 || expr2` |
+| 6 | `___ &#x7c;&#x7c; ___` | `expr1 &#x7c;&#x7c; expr2` |
 | 5 | `___ ?? ___` | `expr1 ?? expr2` |
 | 4 | `___ ? ___ : ___` | `expr ? ifTrue : ifFalse` |
 | 3 | `___ = ___` | `variable = expr` |
-| | `___ += ___` | `variable = expr` |
-| | `___ -= ___` | `variable = expr` |
-| | `___ **= ___` | `variable = expr` |
-| | `___ *= ___` | `variable = expr` |
-| | `___ /= ___` | `variable = expr` |
-| | `___ %= ___` | `variable = expr` |
-| | `___ <<= ___` | `variable = expr` |
-| | `___ >>= ___` | `variable = expr` |
-| | `___ >>>= ___` | `variable = expr` |
-| | `___ &= ___` | `variable = expr` |
-| | `___ ^= ___` | `variable = expr` |
-| | `___ |= ___` | `variable = expr` |
-| | `___ &&= ___` | `variable = expr` |
-| | `___ ||= ___` | `variable = expr` |
+| | `___ += ___` | `variable += expr` |
+| | `___ -= ___` | `variable -= expr` |
+| | `___ **= ___` | `variable **= expr` |
+| | `___ *= ___` | `variable *= expr` |
+| | `___ /= ___` | `variable /= expr` |
+| | `___ %= ___` | `variable %= expr` |
+| | `___ <<= ___` | `variable <<= expr` |
+| | `___ >>= ___` | `variable >>= expr` |
+| | `___ >>>= ___` | `variable >>>= expr` |
+| | `___ &= ___` | `variable &= expr` |
+| | `___ ^= ___` | `variable ^= expr` |
+| | `___ &#x7c;= ___` | `variable &#x7c;= expr` |
+| | `___ &&= ___` | `variable &&= expr` |
+| | `___ &#x7c;&#x7c;= ___` | `variable &#x7c;&#x7c;= expr` |
 | 2 | `yield ___` | `variable = yield expr` |
 | | `yield* ___` | `yield* expr` |
 | 1 | `___ , ___` | `expr1, expr2, expr3` |
