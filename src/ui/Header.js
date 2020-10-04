@@ -3,10 +3,10 @@ import Nav from './Nav';
 import HeaderBanner from '../mdx/headerBanner.mdx';
 import Link from 'next/link';
 import LogoType from '../../public/asset/logotype.svg';
-import ThemeToggle from './ThemeToggle';
+import LogoTypeInvert from '../../public/asset/logotype-invert.svg';
 
 const Header = ({ categories }) => (
-  <header className="header_wrap">
+  <header className="l_flex header_wrap">
     <MDXProvider>
       <HeaderBanner />
     </MDXProvider>
@@ -14,9 +14,9 @@ const Header = ({ categories }) => (
       <Link href="/">
         <a className="l_flex header_brand">
           <img src={LogoType} className="header_logotype" decoding="async" alt="listfulのロゴ" />
+          <img src={LogoTypeInvert} className="header_logotype__invert" decoding="async" alt="listfulのロゴ" />
         </a>
       </Link>
-      <ThemeToggle />
       <Nav categories={categories} />
     </div>
   </header>

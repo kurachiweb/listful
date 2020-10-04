@@ -3,7 +3,7 @@ import Link from 'next/link';
 const ArticleInfo = ({ post }) => (
   <div className="article_info">
     {post.category && (
-      <Link href={`/category/${post.category.toLowerCase()}/`}>
+      <Link href="/category/[category]" as={`/category/${post.category.toLowerCase()}/`}>
         <a className="article_info_category">{post.category}</a>
       </Link>
     )}

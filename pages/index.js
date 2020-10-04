@@ -12,7 +12,7 @@ const IndexPage = ({ posts, categories, pageIndex, numPages }) => (
 );
 
 export async function getStaticProps() {
-  const posts = getAllPosts(['title', 'date', 'slug', 'author', 'category', 'coverImage', 'coverImageAlt', 'coverImageHeight', 'coverImageWidth', 'excerpt']);
+  const posts = getAllPosts(['title', 'published', 'updated', 'slug', 'author', 'category', 'coverImage', 'coverImageAlt', 'coverImageHeight', 'coverImageWidth', 'excerpt']);
   const categories = posts.map(post => post.category).filter((cat, i, arr) => arr.indexOf(cat) === i);
 
   const startIndex = 0;

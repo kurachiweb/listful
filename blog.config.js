@@ -9,6 +9,5 @@ module.exports = {
   shareImage: 'https://nextjs-mdx-blog-starter.vercel.app/img/screenshot.png',
   shareImageAlt: 'listful image.',
   twitter: '@KurachiWeb',
-  postsPerPage: 10,
-  showDate: true // if you would like the date to appear on the blog posts
+  postsPerPage: 10
 };

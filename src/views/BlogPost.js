@@ -13,7 +13,7 @@ class BlogPost extends Component {
     code: CodeBlock
   };
 
-  PostContentSelector = '.article *';
+  PostContentSelector = '.js_html_unescape, .js_html_unescape code, .js_html_unescape span';
 
   HTMLEntityConverter(entity) {
     const doc = new DOMParser().parseFromString(entity, 'text/html');
@@ -29,7 +29,7 @@ class BlogPost extends Component {
       .filter(elem => elem.length)
       .flat()
       .forEach(textNode => {
-        textNode.textContent = textNode.textContent.replace(/((?:&#\w{3};)+)/g, (match, p1) => this.HTMLEntityConverter(p1))
+        textNode.textContent = textNode.textContent.replace(/((?:&#\w{1,6};)+)/g, (match, p1) => this.HTMLEntityConverter(p1))
       });
   }
 
@@ -43,7 +43,7 @@ class BlogPost extends Component {
     return (
       <>
         <ArticleInfo post={post} />
-        <article className="article">
+        <article className="weak_shadow article">
           <MDX components={components}>{post.content}</MDX>
         </article>
       </>
