@@ -28,7 +28,8 @@
   "devDependencies": {
     "next-images": "^1.5.0",
     "onchange": "^7.0.2",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "sharp": "^0.26.1"
   },
   "repository": "https://github.com/johnpolacek/nextjs-mdx-blog-starter",
   "license": "MIT"

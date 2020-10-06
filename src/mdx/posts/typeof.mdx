@@ -1,0 +1,49 @@
+---
+title: 'typeof演算子の戻り値'
+excerpt: 'typeof演算子は、基本的には型名を示す文字列を返しますが、配列やnullの扱いなど注意すべき点もあります。'
+category: 'JavaScript'
+coverImage: '/img/typeof-ogp.png'
+coverImageAlt: 'JavaScriptカテゴリの「typeof演算子の戻り値」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-10-5 8:5'
+updated: '2020-10-6 21:44'
+---
+
+## typeof演算子の使い方
+
+```js
+returnValue = typeof ___;
+if (typeof ___ === 'string') { /* 何か処理 */ }
+```
+
+## typeof演算子への入力別戻り値
+
+| 種類 | 戻り値 | 当てはまる例 |
+| --- | --- | --- |
+| 数値 | "number" | `635, -28.1, 1e3, 0x5fff, NaN, Infinity, Number('41')` |
+| 文字列 | "string" | <span className="js_html_unescape">`"foo bar'', "", &#x60;テンプレート文字列&#x60;, String(), Date()`</span> |
+| 真偽値 | "boolean" | `true, false, Boolean()` |
+| 配列 | "object" | `[], Array(), new Array()` |
+| Null | "object" | `null` |
+| 未定義 | "undefined" | `undefined` |
+| 関数 | "function" | `function() {}, class Foo {}, toString` |
+| Symbol | "symbol" | `Symbol(), Symbol.iterator` |
+| BigInt | "bigint" | `635n, BigInt(7), BigInt('41')` |
+| 正規表現 | "object" | `/regexp/g, RegExp('r'), new RegExp('r')` |
+| その他のオブジェクト | "object" | `{foo: 635}, Object(), new Object(), new Date()` |
+
+## 注意すべきパターン逆引き
+
+| 指定値または種類 | 出力 |
+| --- | --- | --- |
+| `null` | "object" |
+| `NaN` | "number" |
+| 配列 | "object" |
+| `Element.attributes` | "object" |
+| `document.querySelector(___)` | "object" |
+| `document.getElementByClassName(___)` | "object" |
+| `document.all` | "undefined" |
+| `new Boolean()` | "object" |
+| `new String()` | "object" |
+| `new Number()` | "object" |

@@ -420,7 +420,8 @@ a {
   h4,
   h5,
   h6 {
-    margin-bottom: -0.75em;
+    font-weight: normal;
+    margin: 1.25em 0 -0.5em;
   }
 
   h2 {
@@ -452,7 +453,7 @@ a {
   table {
     border-collapse: collapse;
     border-top: 1px solid $textGrayC;
-    margin: 1rem 0;
+    margin: 1rem 0 2rem;
     width: 100%;
 
     @media (prefers-color-scheme: dark) {
@@ -482,7 +483,11 @@ a {
   }
 
   code {
-    font-size: 1.188rem;
+    font-size: 1.125rem;
+  }
+
+  pre > code {
+    font-size: 0.875rem;
   }
 }
 
@@ -522,7 +527,7 @@ a {
     border-top: 2px solid $mainC;
     display: flex;
     flex-direction: column;
-    margin: 0 0 0 -0.688rem;
+    margin: 0 0 0 -0.813rem;
     position: absolute;
     width: max-content;
     z-index: 10000;
@@ -536,7 +541,7 @@ a {
 
     & .g_nav_item {
       border-left: 2px solid $mainC;
-      padding: 0.5rem 1rem 0.5rem 0.625rem;
+      padding: 0.5rem 0.75rem;
       min-width: 5rem;
 
       @media (prefers-color-scheme: dark) {

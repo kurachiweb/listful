@@ -6,8 +6,8 @@ const CodeBlock = ({ children, className }) => {
   const language = className ? className.replace(/language-/, '') : 'javascript';
   return (
     <Highlight {...defaultProps} code={children} language={language} theme={github}>
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre className={className} style={{ ...style, padding: '20px', margin: '16px 0' }}>
+      {({ className, tokens, getLineProps, getTokenProps }) => (
+        <pre className={className}>
           {tokens.map((line, i) => (
             <div key={i} {...getLineProps({ line, key: i })}>
               {line.map((token, j) => (
