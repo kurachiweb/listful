@@ -1,49 +1,19 @@
-# Next.js MDX Blog Starter
+# listful
 
-Next.js MDX Blog Starter for building blogs with [Next.js](https://nextjs.org/) and [MDX](https://mdxjs.com/), including [Theme UI](https://theme-ui.com/home/) Component Design System, [Vercel Deployment](https://vercel.com/) and more.
+listfulは、フロントエンドエンジニアのためのチートシート型技術ブログです。[React](https://reactjs.org/), [Next.js](https://nextjs.org/), [MDX](https://mdxjs.com/), [SCSS](https://sass-lang.com/)によって構成されています。[Vercel](https://vercel.com/)上で公開しているので、下のリンクからご覧下さい。
 
-View Demo at [nextjs-mdx-blog-starter.vercel.app](https://nextjs-mdx-blog-starter.vercel.app/)
+[listful - フロントエンドエンジニア向けチートシート](https://nextjs-mdx-blog-starter.vercel.app/)
 
-## Deploy
+## React+Next.jsにした理由
 
-Build and deploy with vercel. [Install vercel](https://vercel.com/download) if you haven’t already
+Next.jsはSSR\(Server Side Rendering)とSSG\(Static Site Generator\)を選ぶことができるので採用しました。結局SSGにすることにしたのでGatsbyでも良かったのかもしれませんが、後悔はありません。
 
-```
-npm install && vercel deploy
-```
+## 製作者
 
-## Customize
+倉地 俊輔 \([ポートフォリオ](https://portfolio.kurachi.design/)\)
 
-You can set properties like your blog title, description, Google Analytics code, social media sharing image and more by editing `blog.config.js`
+## 制作期間
 
-Content for the about page, footer and blurb in the header are written in markdown/mdx. Find markdown content and blog post files in `src/markdown`.
+2020年9月23日〜30日
 
-If you would like to add more data to your posts, such as author information or other meta data, simple add more fields to the [front matter](https://jekyllrb.com/docs/front-matter/) in your mdx files and add the field names to the `getStaticProps` function for the various pages that display posts. See also the official [Next.js Blog Starter](https://github.com/vercel/next.js/tree/canary/examples/blog-starter) which served as the basis for this project.
-
-To edit the styling of the site, such as colors, typography and spacing, you can make changes to the theme file at `src/layout/Theme.js`. It is also there you can define styles for dark mode, or remove it.
-
-Of course, you can change or add to the existing components in `src/components/ui` or edit or create new pages in `src/pages` and `src/components/views`. 
-
-To further customize the site, refer to the [Theme UI documentation](https://theme-ui.com/getting-started) for making and styling your own components.
-
-## Writing Posts
-
-To write a new post, create a new `.mdx` file in the `src/markdown/posts` directory.
-
-Update the front-matter for the post with its title, excerpt, cover image and the publication date. 
-
-#### Title
-
-The title will appear at the top of the post and will be used in the meta tags for the page.
-
-#### Excerpt
-
-The excerpt will appear on the posts listing and as the meta description for the post page. It can be formatted in markdown. 
-
-#### Cover Image
-
-If included, the cover image will be displayed above the excerpt and post content. It will also be the main image that appears when the post is shared on social media. Be sure to also set the cover image alt value for accessibility.
-
-
-
-
+[Next.js MDX Blog Starter](https://nextjs-mdx-blog-starter.vercel.app/nextjs-mdx-blog-starter)を使ったことで短縮できたとはいえ、不慣れで構築に時間が掛かってしまいました。

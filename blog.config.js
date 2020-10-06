@@ -1,7 +1,7 @@
 module.exports = {
   url: 'https://listful.dev/',
   title: 'listful',
-  subtitle: 'Web cheetsheets in one place.',
+  subtitle: 'フロントエンドエンジニア向けチートシート',
   description: 'listfulは、フロントエンドエンジニアのためのチートシート型技術ブログです。',
   author: 'Kurachi Shunsuke',
   startDate: '2020/9/27',
