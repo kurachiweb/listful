@@ -1,0 +1,85 @@
+---
+title: 'new Dateの文字列変換メソッド'
+excerpt: 'JavaScriptでは、Dateオブジェクトを文字列に変換するメソッドがいくつか用意されています。toString、toUTCString、toISOString、toTimeString、これらのややこしすぎるメソッドを解説します。'
+category: 'JavaScript'
+coverImage: '/img/new-date-tostring-ogp.png'
+coverImageAlt: 'JavaScriptカテゴリの「new Dateの文字列変換メソッド」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-10-7 23:23'
+updated: '2020-10-7 23:23'
+---
+
+## Dateオブジェクトの作成
+
+メソッドを使う前にオブジェクトを作ります。
+
+```js
+// 現在時刻を示すDateオブジェクト
+dateObj = new Date();
+
+// 2010年4月12日の14時8分54秒を示す
+dateObj = new Date(2010, /*注意*/3, 12, 14, 8, 54);
+dateObj = new Date('2010-04-12T14:08:54');
+dateObj = new Date('April 12, 2010 14:08:54');
+```
+
+## Dateから文字列へ変換するメソット一覧
+
+<dl>
+    <div>
+        <dt>.toDateString()</dt>
+        <dd>曜日 月(英語表記) 日 年の順になった文字列を返します。</dd>
+        <dd>出力：<samp>Mon Apr 12 2010</samp></dd>
+    </div>
+    <div>
+        <dt>.toISOString()</dt>
+        <dd>年からミリ秒まで、協定世界時(UTC)に基づいた<a href="https://www.iso.org/iso-8601-date-and-time-format.html" target="_blank" rel="nofollow noopener">ISO 8601</a>形式の文字列を返します。</dd>
+        <dd>出力：<samp>2010-04-12T05:08:54.000Z</samp></dd>
+    </div>
+    <div>
+        <dt>.toJSON()</dt>
+        <dd>toISOStringと同じ文字列を返します。</dd>
+        <dd>出力：<samp>2010-04-12T05:08:54.000Z</samp></dd>
+    </div>
+    <div>
+        <dt>.toUTCString()</dt>
+        <dd>協定世界時(UTC)に基づき、Www, dd Mmm yyyy hh:mm:ss GMT曜日, 日 月(英語表記) 年 時:分:秒 GMTの潤で文字列を返します。</dd>
+        <dd>出力：<samp>Mon, 12 Apr 2010 05:08:54 GMT</samp></dd>
+    </div>
+    <div>
+        <dt>.toGMTString()</dt>
+        <dd>非推奨メソッドのため、代わりに<code>toUTCString()</code>を使いましょう。</dd>
+        <dd>出力：<samp>Mon, 12 Apr 2010 05:08:54 GMT</samp></dd>
+    </div>
+    <div>
+        <dt>.toString()</dt>
+        <dd>Dateオブジェクトの内容全体を文字列として返します。</dd>
+        <dd>出力：<samp>Mon Apr 12 2010 14:08:54 GMT+0900 (日本標準時)</samp></dd>
+    </div>
+    <div>
+        <dt>.toDateString()</dt>
+        <dd>Dateオブジェクトの曜日と年月日部分を文字列として返します。</dd>
+        <dd>出力：<samp>Mon Apr 12 2010</samp></dd>
+    </div>
+    <div>
+        <dt>.toTimeString()</dt>
+        <dd>Dateオブジェクトの時分秒とタイムゾーン部分を文字列として返します。</dd>
+        <dd>出力：<samp>14:08:54 GMT+0900 (日本標準時)</samp></dd>
+    </div>
+    <div>
+        <dt>.toLocaleString([locales[, options]])</dt>
+        <dd><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat" target="_blank" rel="nofollow noopener">引数での指定</a>に基づいた言語に合った形式で、Dateオブジェクトの内容全体を文字列として返します。</dd>
+        <dd>出力：<samp>2010/4/12 14:08:54</samp></dd>
+    </div>
+    <div>
+        <dt>.toLocaleDateString([locales[, options]])</dt>
+        <dd><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat" target="_blank" rel="nofollow noopener">引数での指定</a>に基づいた言語に合った形式で、Dateオブジェクトの年月日を文字列として返します。</dd>
+        <dd>出力：<samp>2010/4/12</samp></dd>
+    </div>
+    <div>
+        <dt>.toLocaleTimeString([locales[, options]])</dt>
+        <dd><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat" target="_blank" rel="nofollow noopener">引数での指定</a>に基づいた言語に合った形式で、Dateオブジェクトの時分秒を文字列として返します。</dd>
+        <dd>出力：<samp>14:08:54</samp></dd>
+    </div>
+</dl>
