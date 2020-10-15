@@ -14,7 +14,7 @@ $boxShadowC_darkM: hsla(210, 5%, 24%, 0.16);
 $textC: hsl(210, 4%, 26%);
 $textC_darkM: hsl(210, 20%, 98%);
 $textGrayC: hsl(210, 5%, 60%);
-$codeBGC: hsl(210, 10%, 90%);
+$codeBGC: hsl(34, 8%, 7%); /* invert(1) saturate(2.5)するため */
 $codeBGC_darkM: hsl(210, 6%, 24%);
 $defListBGC: hsl(210, 90%, 90%);
 $defListBGC_darkM: hsl(210, 25%, 38%);
@@ -411,7 +411,7 @@ a {
 .article {
   background-color: $contentBGC;
   margin-top: 3rem;
-  padding: 0.5rem 1.5rem;
+  padding: 1rem 1.5rem;
 
   @media (prefers-color-scheme: dark) {
     & {
@@ -489,24 +489,39 @@ a {
     text-align: left;
   }
 
-  code,
   samp,
+  code {
+    font-size: 1.125rem;
+    padding: 0.25em 0;
+  }
+
   kbd {
-    background-color: $codeBGC;
     font-size: 1.125rem;
     padding: 0.25em 0.375em;
+  }
+
+  pre > code,
+  p > samp,
+  :not(kbd) > kbd {
+    background-color: $codeBGC;
+    filter: invert(1) saturate(2.5);
 
     @media (prefers-color-scheme: dark) {
       & {
         background-color: $codeBGC_darkM;
+        filter: saturate(1.5);
       }
     }
   }
-  
-  pre > code {
-    display: block;
-    font-size: 0.875rem;
-    padding: 1rem;
+
+  pre {
+    white-space: pre-wrap;
+
+    > code {
+      display: block;
+      font-size: 0.875rem;
+      padding: 1rem;
+    }
   }
 
   dl {
@@ -536,6 +551,10 @@ a {
 
   dd {
     margin: 0.375rem 0;
+  }
+
+  hr {
+    margin: 2rem 0;
   }
 }
 

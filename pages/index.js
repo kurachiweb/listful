@@ -5,7 +5,7 @@ import Pagination from '../src/ui/Pagination';
 import { getAllPosts } from '../src/api';
 
 const IndexPage = ({ posts, categories, pageIndex, numPages }) => (
-  <Wrapper url="/" title={`${config.title} - ${config.subtitle}`} description={config.description} categories={categories} imageUrl={config.shareImage} imageAlt={config.shareImageAlt}>
+  <Wrapper url={config.url} title={`${config.title} - ${config.subtitle}`} description={config.description} categories={categories} imageUrl={config.shareImage} imageAlt={config.shareImageAlt}>
     <Posts posts={posts} />
     <Pagination pageIndex={pageIndex} numPages={numPages} />
   </Wrapper>

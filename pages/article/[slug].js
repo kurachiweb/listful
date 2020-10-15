@@ -4,7 +4,7 @@ import config from '../../blog.config';
 import { getPostBySlug, getAllPosts } from '../../src/api';
 
 const PostPage = ({ post, categories }) => (
-  <Wrapper url={`/article/${post.slug}`} title={`${post.title} | ${config.title}`} description={post.excerpt} categories={categories} imageUrl={config.url + post.coverImage} imageAlt={post.coverImageAlt}>
+  <Wrapper url={`${config.url}article/${post.slug}`} title={`${post.title} | ${config.title}`} description={post.excerpt} categories={categories} imageUrl={config.url + post.coverImage} imageAlt={post.coverImageAlt}>
     <BlogPost post={post} />
   </Wrapper>
 );

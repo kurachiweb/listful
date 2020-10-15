@@ -1,0 +1,110 @@
+---
+title: 'Webで使う主な言語コードの一覧(BCP47準拠)'
+excerpt: 'jaやen-USといった言語コードは、HTMLとJavaScriptとCSSセレクタで使えます。ここでは、多くのブラウザで有効な言語コードを一覧にしました。'
+category: 'Other'
+coverImage: '/asset/ogp/lang-code-list.png'
+coverImageAlt: 'Otherカテゴリの「Webで使う主な言語コードの一覧」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-10-10 13:36'
+updated: '2020-10-10 13:36'
+---
+
+HTMLではlang属性に言語コードを指定することで、その要素または子孫要素のコンテンツがどんな言語で書かれているかを指定することができます。
+
+```html
+<html lang="ja"> ... </html>
+```
+
+それをCSSのセレクタで拾うこともできます。
+
+```css
+:lang(ja) {
+    // lang="ja" にも lang="ja-JP" にもマッチ
+    // 子孫要素にもマッチする
+    font-family: 'こうして日本語対応フォントを書くなど'
+}
+[lang="ja"] {
+    // lang="ja" にのみマッチ
+    font-family: 'こうして日本語対応フォントを書くなど'
+}
+```
+
+JavaScriptでは、`Intl`系メソッドの第一引数にて指定することで、日付形式をローカライズできます。
+
+```js
+Intl.DateTimeFormat('ja-u-ca-japanese'/* locales引数 */, {
+    dateStyle: 'full',
+    timeStyle: 'full'
+}).format(dateObj);
+```
+
+## 主な言語コードの一覧
+
+| 指定値 | 言語 |
+| --- | --- |
+| ja | 日本語 |
+| en-US | アメリカ英語 |
+| ko-KR | 韓国語 |
+| zh-Hans | 中国語(繁体字) |
+| zh-Hant | 中国語(簡体字) |
+| ar-SA | アラビア語(サウジアラビア) |
+| bn-BD | ベンガル語(バングラデシュ) |
+| bn-IN | ベンガル語(インド) |
+| cs | チェコ語 |
+| da-DK | デンマーク語(デンマーク) |
+| de-AT | オーストリアドイツ語 |
+| de-CH | スイスドイツ語 |
+| de-DE | ドイツ語(ドイツ) |
+| el-GR | 現代ギリシア語 |
+| en-AU | オーストラリア英語 |
+| en-CA | カナダ英語 |
+| en-GB | イギリス英語(グレートブリテン) |
+| en-IE | アイルランド英語 |
+| en-IN | インド英語 |
+| en-NZ | ニュージーランド英語 |
+| en-ZA | 南アフリカ英語 |
+| es-AR | スペイン語(アルゼンチン) |
+| es-CL | チリスペイン語 |
+| es-CO | スペイン語(コロンビア) |
+| es-ES | スペイン語(カスティリャ語) |
+| es-MX | スペイン語(メキシコ) |
+| es-US | スペイン語(アメリカ) |
+| fi | フィンランド語 |
+| fr-BE | ベルギー・フランス語 |
+| fr-CA | カナダ・フランス語 |
+| fr-CH | スイス・フランス語 |
+| fr-FR | フランス語(フランス) |
+| he-IL | ヘブライ語(イスラエル) |
+| hi-IN | ヒンディー語(インド) |
+| hu | ハンガリー語 |
+| id | インドネシア語 |
+| it-CH | イタリア語(スイス) |
+| it-IT | イタリア語(イタリア) |
+| nl-BE | オランダ語(ベルギー) |
+| nl-NL | オランダ語(オランダ) |
+| no | ノルウェー語 |
+| pl-PL | ポーランド語(ポーランド) |
+| pt-BR | ブラジルポルトガル語 |
+| pt-PT | イベリアポルトガル語(ポルトガル) |
+| ro-RO | ルーマニア語(ルーマニア) |
+| ru-RU | ロシア語(ロシア連邦) |
+| sk | スロバキア語 |
+| sv-SE | スウェーデン語(スウェーデン) |
+| ta-IN | タミル語(インド) |
+| ta-LK | タミル語(スリランカ) |
+| th-TH | タミル語(タイ) |
+| tr-TR | トルコ語(トルコ) |
+
+## 実装の違いについて
+
+全ての言語コードが全てのブラウザで動作するとは限りません。例えばMac Safari 14.0において、ノルウェー語を示す`no`は認識されないので、OSまたはブラウザ既定の言語形式でフォーマットされてしまいます。
+
+---
+
+参考リンク
+
+- [BCP 47 - Tags for Identifying Languages](https://tools.ietf.org/html/bcp47)
+- [IETF言語タグ - Wikipedia](https://ja.wikipedia.org/wiki/IETF%E8%A8%80%E8%AA%9E%E3%82%BF%E3%82%B0)
+- [JavaScript: Language Tags (BCP 47)](https://www.techonthenet.com/js/language_tags.php)
+- [ページのローカライズ版について Google に知らせる - Search Console ヘルプ](https://support.google.com/webmasters/answer/189077?hl=ja)

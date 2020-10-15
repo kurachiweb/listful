@@ -7,7 +7,7 @@ import { getAllPosts } from '../../src/api';
 const allPosts = getAllPosts(['title', 'published', 'updated', 'slug', 'author', 'category', 'coverImage', 'coverImageAlt', 'coverImageHeight', 'coverImageWidth', 'excerpt']);
 
 const PostsPage = ({ posts, categories, pageIndex, numPages }) => (
-  <Wrapper url={`/page/${pageIndex}`} title={`記事一覧(${pageIndex + 1}/${numPages}ページ) | ${config.title}`} description={config.description} categories={categories} imageUrl={config.shareImage} imageAlt={config.shareImageAlt}>
+  <Wrapper url={`${config.url}page/${pageIndex}`} title={`記事一覧(${pageIndex + 1}/${numPages}ページ) | ${config.title}`} description={config.description} categories={categories} imageUrl={config.shareImage} imageAlt={config.shareImageAlt}>
     <Posts posts={posts} />
     <Pagination pageIndex={pageIndex} numPages={numPages} />
   </Wrapper>

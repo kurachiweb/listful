@@ -2,7 +2,7 @@
 
 listfulは、フロントエンドエンジニアのためのチートシート型技術ブログです。[React](https://reactjs.org/), [Next.js](https://nextjs.org/), [MDX](https://mdxjs.com/), [SCSS](https://sass-lang.com/)によって構成されています。[Vercel](https://vercel.com/)上で公開しているので、下のリンクからご覧下さい。
 
-[listful - フロントエンドエンジニア向けチートシート](https://nextjs-mdx-blog-starter.vercel.app/)
+[listful - フロントエンドエンジニア向けチートシート](https://listful.dev/)
 
 ## React+Next.jsにした理由
 

@@ -10,7 +10,7 @@ const categories = categoriesRaw.filter((cat, i, arr) => arr.indexOf(cat) === i)
 const categoryFormat = category => category.toLowerCase().replace(' ', '-');
 
 const CategoryPostsPage = ({ posts, category, categories, pageIndex, numPages }) => (
-  <Wrapper url={`/category/${categoryFormat(category)}`} title={`カテゴリ「${category}」の記事一覧(${pageIndex + 1}/${numPages}ページ) | ${config.title}`} description={config.description} imageUrl={config.shareImage} categories={categories} imageAlt={config.shareImageAlt}>
+  <Wrapper url={`${config.url}category/${categoryFormat(category)}`} title={`カテゴリ「${category}」の記事一覧(${pageIndex + 1}/${numPages}ページ) | ${config.title}`} description={config.description} imageUrl={config.shareImage} categories={categories} imageAlt={config.shareImageAlt}>
     <Posts posts={posts} />
     <Pagination category={category} pageIndex={pageIndex} numPages={numPages} />
   </Wrapper>

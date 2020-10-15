@@ -6,7 +6,7 @@ module.exports = {
   author: 'Kurachi Shunsuke',
   startDate: '2020/9/27',
   analytics: '', // put your google analytics code here to add tracking
-  shareImage: 'https://nextjs-mdx-blog-starter.vercel.app/img/screenshot.png',
+  shareImage: 'https://listful.dev/listful-ogp.png',
   shareImageAlt: 'listful image.',
   twitter: '@KurachiWeb',
   postsPerPage: 10

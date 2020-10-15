@@ -1,21 +1,21 @@
 import React from 'react';
 import Highlight, { defaultProps } from 'prism-react-renderer';
-import github from 'prism-react-renderer/themes/github';
+import ColorTheme from 'prism-react-renderer/themes/vsDark';
 
 const CodeBlock = ({ children, className }) => {
   const language = className ? className.replace(/language-/, '') : 'javascript';
   return (
-    <Highlight {...defaultProps} code={children} language={language} theme={github}>
+    <Highlight {...defaultProps} code={children} language={language} theme={ColorTheme}>
       {({ className, tokens, getLineProps, getTokenProps }) => (
-        <pre className={className}>
-          {tokens.map((line, i) => (
+        <code className={className}>
+          {tokens.slice(0, -1).map((line, i) => (
             <div key={i} {...getLineProps({ line, key: i })}>
               {line.map((token, j) => (
                 <span key={j} {...getTokenProps({ token, key: j })} />
               ))}
             </div>
           ))}
-        </pre>
+        </code>
       )}
     </Highlight>
   );

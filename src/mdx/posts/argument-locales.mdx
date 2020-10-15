@@ -1,0 +1,99 @@
+---
+title: 'JavaScriptにおける言語コード指定の詳解'
+excerpt: '主にIntlオブジェクトで使う、言語コードを指定するlocales引数の書き方を詳しく解説します。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/argument-locales.png'
+coverImageAlt: 'JavaScriptカテゴリの「JavaScriptにおける言語コード指定の詳解」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-10-11 23:47'
+updated: '2020-10-11 23:47'
+---
+
+この記事では言語コードを指定する引数のことを、便箋上**locales引数**とします。
+
+## locales引数の使い所
+
+```js
+new Intl.DateTimeFormat([locales[, options]]).format(dateObj);
+new Intl.NumberFormat([locales[, options]]).format(dateObj);
+dateObj.toLocaleString([locales[, options]]);
+```
+
+## 書き方
+
+BCP47に基づいた言語を表す文字列、またはその配列での指定です。
+
+| 言語コード | 言語 |
+| --- | --- |
+| ja | 日本語 |
+| en-US | アメリカ英語 |
+| ko-KR | 韓国語 |
+| zh-Hans | 中国語(繁体字) |
+| zh-Hant | 中国語(簡体字) |
+
+上のリストだけでは足らない場合は、[Webで使う主な言語コードの一覧(BCP47準拠) | listful](/article/lang-code-list)をご覧下さい。
+
+何も指定しないか明示的に`undefined`を指定した場合は、実装によりますがOSのデフォルト言語(Firefoxはそのブラウザのデフォルト言語)に元づいて処理されます。
+
+### 言語コードのUnicode拡張
+
+言語コードでは、jaなどに加えて、`u`という拡張部分タグを後ろに付けることができます。そして`u`タグに続けて、下のような指定ができます。
+
+#### u-nu-何か
+
+普通は0~9となる番号表記を変えることができる。
+
+| 指定値 | 種類 | 出力 |
+| --- | --- | --- |
+| latn | アラビア数字(算用数字) | 0 1 2 3 4 5 6 7 8 9 |
+| hanidec | 漢数字 | 〇 一 二 三 四 五 六 七 八 九 |
+
+有効な全ての指定値は、[言語コードで数字の表し方を指定する | listful](/article/lang-code-nu)をご覧下さい。
+
+#### u-ca-何か
+
+`Intl.DateTimeFormat`でのみ使える、暦の指定です。
+
+```js
+dateObj = new Date(2020, 11, 3, 4, 56, 7, 890);
+new Intl.DateTimeFormat('ja-u-ca-japanese', {dateStyle: 'full', timeStyle: 'full'}).format(dateObj);
+// 出力 'R2/12/03 04:56'
+```
+
+| 指定値 | 種類 |
+| --- | --- | --- |
+| iso8601 | ISO8601準拠暦 |
+| japanese | 和暦 |
+| buddhist | 仏暦 |
+| chinese | 伝統的な中国暦 |
+| coptic | コプト暦 |
+| ethioaa | エチオピア暦(Amete Alem) |
+| ethiopic | エチオピア暦(Amete Mihret) |
+| gregory | グレゴリオ暦 |
+| hebrew | 古代ユダヤ暦 |
+| indian | インド国定暦 |
+| islamic | ヒジュラ暦 |
+| persian | イラン暦 |
+| roc | 中華民国暦 |
+
+#### u-hc-何か
+
+`Intl.DateTimeFormat`でのみ使える、時制の指定です。
+
+| 指定値 | 説明 |
+| --- | --- |
+| h11 | 午前(午後)は0時から始まり、11時台まで |
+| h12 | 午前(午後)は12時から始まり、次に1時、そして11時台まで |
+| h23 | 0時から始まり、11時台まで |
+| h24 | 24時から始まり、次に1時、そして23時台まで |
+
+---
+
+参考リンク
+
+- [Intl - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation)
+- [Intl.Locale.prototype.numberingSystem - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/numberingSystem)
+- [Intl.Locale.prototype.calendar - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/calendar)
+- [ISO 15924 - Wikipedia](https://ja.wikipedia.org/wiki/ISO_15924)
+- [言語タグ - HTML5](https://htmlcss.jp/html/langtag.html)
