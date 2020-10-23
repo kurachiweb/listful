@@ -14,7 +14,7 @@ $boxShadowC_darkM: hsla(210, 5%, 24%, 0.16);
 $textC: hsl(210, 4%, 26%);
 $textC_darkM: hsl(210, 20%, 98%);
 $textGrayC: hsl(210, 5%, 60%);
-$codeBGC: hsl(34, 8%, 7%); /* invert(1) saturate(2.5)するため */
+$codeBGC: hsl(210, 8%, 7%); /* invert(1) saturate(2.5) hue-rotate(180deg)するため */
 $codeBGC_darkM: hsl(210, 6%, 24%);
 $defListBGC: hsl(210, 90%, 90%);
 $defListBGC_darkM: hsl(210, 25%, 38%);
@@ -44,6 +44,7 @@ body {
   height: 100%;
   line-height: 1.813;
   margin: 0;
+  overflow-wrap: break-word;
   padding: 0;
 
   @media (prefers-color-scheme: dark) {
@@ -436,11 +437,11 @@ a {
   }
 
   h3 {
-    font-size: 1.25rem;
+    font-size: 1.313rem;
   }
 
   h4 {
-    font-size: 1.125rem;
+    font-size: 1.188rem;
   }
 
   h5,
@@ -493,6 +494,7 @@ a {
   code {
     font-size: 1.125rem;
     padding: 0.25em 0;
+    word-break: break-all;
   }
 
   kbd {
@@ -504,7 +506,7 @@ a {
   p > samp,
   :not(kbd) > kbd {
     background-color: $codeBGC;
-    filter: invert(1) saturate(2.5);
+    filter: invert(1) saturate(2.5) hue-rotate(180deg);
 
     @media (prefers-color-scheme: dark) {
       & {
@@ -515,6 +517,7 @@ a {
   }
 
   pre {
+    margin: 1.25rem 0 2.5rem;
     white-space: pre-wrap;
 
     > code {

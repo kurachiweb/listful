@@ -6,8 +6,8 @@ coverImage: '/asset/ogp/argument-locales.png'
 coverImageAlt: 'JavaScriptカテゴリの「JavaScriptにおける言語コード指定の詳解」'
 coverImageWidth: 1200
 coverImageHeight: 630
-published: '2020-10-11 23:47'
-updated: '2020-10-11 23:47'
+published: '2020-10-12 8:27'
+updated: '2020-10-16 23:13'
 ---
 
 この記事では言語コードを指定する引数のことを、便箋上**locales引数**とします。
@@ -36,13 +36,13 @@ BCP47に基づいた言語を表す文字列、またはその配列での指定
 
 何も指定しないか明示的に`undefined`を指定した場合は、実装によりますがOSのデフォルト言語(Firefoxはそのブラウザのデフォルト言語)に元づいて処理されます。
 
-### 言語コードのUnicode拡張
+## 言語コードのUnicode拡張
 
 言語コードでは、jaなどに加えて、`u`という拡張部分タグを後ろに付けることができます。そして`u`タグに続けて、下のような指定ができます。
 
-#### u-nu-何か
+### u-nu-何か
 
-普通は0~9となる番号表記を変えることができる。
+`Intl.NumberFormat`と`Intl.DateTimeFormat`で使います。普通は0~9となる番号表記(numbering system)を変えることができます。
 
 | 指定値 | 種類 | 出力 |
 | --- | --- | --- |
@@ -51,9 +51,9 @@ BCP47に基づいた言語を表す文字列、またはその配列での指定
 
 有効な全ての指定値は、[言語コードで数字の表し方を指定する | listful](/article/lang-code-nu)をご覧下さい。
 
-#### u-ca-何か
+### u-ca-何か
 
-`Intl.DateTimeFormat`でのみ使える、暦の指定です。
+`Intl.DateTimeFormat`でのみ使える、暦(calendar)の指定です。
 
 ```js
 dateObj = new Date(2020, 11, 3, 4, 56, 7, 890);
@@ -62,7 +62,7 @@ new Intl.DateTimeFormat('ja-u-ca-japanese', {dateStyle: 'full', timeStyle: 'full
 ```
 
 | 指定値 | 種類 |
-| --- | --- | --- |
+| --- | --- |
 | iso8601 | ISO8601準拠暦 |
 | japanese | 和暦 |
 | buddhist | 仏暦 |
@@ -77,9 +77,9 @@ new Intl.DateTimeFormat('ja-u-ca-japanese', {dateStyle: 'full', timeStyle: 'full
 | persian | イラン暦 |
 | roc | 中華民国暦 |
 
-#### u-hc-何か
+### u-hc-何か
 
-`Intl.DateTimeFormat`でのみ使える、時制の指定です。
+`Intl.DateTimeFormat`でのみ使える、時制(hour cycle)の指定です。
 
 | 指定値 | 説明 |
 | --- | --- |
@@ -88,6 +88,68 @@ new Intl.DateTimeFormat('ja-u-ca-japanese', {dateStyle: 'full', timeStyle: 'full
 | h23 | 0時から始まり、11時台まで |
 | h24 | 24時から始まり、次に1時、そして23時台まで |
 
+### u-co-何か
+
+`Intl.Collator`でのみ使える、比較ルール(collation)の指定です。
+
+| 指定値 | 比較ルール |
+| --- | --- |
+| big5han | ラテン文字ならピンイン順で、漢字ならbig5文字集合の順(中国語向け) |
+| dict | 辞書形式順(シンハラ語などで) |
+| direct | バイナリコードポイント順(非推奨) |
+| ducet | Unicode照合アルゴリズムに基づく順序 |
+| gb2312 | ラテン文字ならピンイン順で、漢字ならgb2312han順(中国語向け) |
+| phonebk | ウムラウト付き母音をウムラウト無し母音+eとして扱う電話帳形式の順序(ドイツ語のみ) |
+| phonetic | 発音に基づく順序 |
+| pinyin | ラテン文字も漢字もピンイン順(中国語向け) |
+| reformed | リフォーム順(スウェーデン語など) |
+| searchjl | ハングルの子音順 |
+| stroke | ラテン文字ならピンイン順、漢字なら画数順(中国語向け) |
+| trad | 伝統的な形の順序(スペイン語など) |
+| unihan | ラテン文字ならピンイン順、漢字ならUnihanデータベースの部首画数順(中国語向け) |
+
+### u-kn-何か
+
+`Intl.Collator`でのみ使える、数値(numeric)として比較するかの指定です。
+
+数字の比較では、文字列として扱うか数値として扱うかで、順番が変わってしまうことがあります。
+
+| 指定値 | 比較ルール |
+| --- | --- |
+| true | 数値として比較 |
+| false | 文字列として比較 |
+
+```js
+new Intl.Collator('ja-u-kn-true').compare('2', '10'); // 出力: (負の数)
+new Intl.Collator('ja-u-kn-false').compare('2', '10'); // 出力: (正の数)
+new Intl.Collator('ja').compare('2', '10'); // 出力: (正の数)
+```
+
+なお数字以外の番号は数字として扱ってくれないようです。
+
+```js
+new Intl.Collator('zh-Hans-u-nu-hanidec-kn-true').compare('二', '一〇');
+new Intl.Collator('zh-Hans-u-nu-hanidec-kn-false').compare('二', '一〇');
+new Intl.Collator('zh-Hans-u-nu-hanidec').compare('二', '一〇');
+// いずれも出力は負の数
+```
+
+### u-kf-何か
+
+ラテン文字などにおいて、大文字小文字の順序(caseFirst)を指定します。
+
+| 指定値 | 比較ルール |
+| --- | --- |
+| upper | 大文字が先 (A > a) |
+| lower | 小文字が先 (a > A) |
+| false | 言語コードで設定した言語次第 |
+
+```js
+new Intl.Collator('ja-u-kf-upper').compare('R', 'r'); // 出力: (負の数)
+new Intl.Collator('ja-u-kf-lower').compare('R', 'r'); // 出力: (正の数)
+new Intl.Collator('ja-u-kf-false').compare('R', 'r'); // 出力: (正の数)
+```
+
 ---
 
 参考リンク
@@ -95,5 +157,6 @@ new Intl.DateTimeFormat('ja-u-ca-japanese', {dateStyle: 'full', timeStyle: 'full
 - [Intl - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation)
 - [Intl.Locale.prototype.numberingSystem - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/numberingSystem)
 - [Intl.Locale.prototype.calendar - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/calendar)
+- [Intl.Locale.prototype.collation - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/collation)
 - [ISO 15924 - Wikipedia](https://ja.wikipedia.org/wiki/ISO_15924)
 - [言語タグ - HTML5](https://htmlcss.jp/html/langtag.html)

@@ -10,6 +10,9 @@ published: '2020-10-15 9:00'
 updated: '2020-10-15 9:00'
 ---
 
+`Intl.NumberFormat`と`Intl.DateTimeFormat`で使います。
+[JavaScriptにおける言語コード指定の詳解 | listful](/article/argument-locales)
+
 普通は0~9となる番号を変えられます。
 
 | 指定値 | 種類 | 出力 |
@@ -108,7 +111,7 @@ new Intl.DateTimeFormat('bn-IN-u-nu-latn', {dateStyle: 'full', timeStyle: 'full'
 // いずれも同じ出力: মঙ্গলবার, 22 ফেব্রুয়ারী, 2022 10:22:22 PM জাপান মানক সময়
 ```
 
-`latn`が必要かどうかは分からないですが、影響はあるといえます。
+`latn`が必要かどうかは分かりませんが、影響はあるといえます。
 
 ---
 

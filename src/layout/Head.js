@@ -6,6 +6,7 @@ const DocHead = props => (
   <Head>
     <title>{props.title}</title>
     <meta name="description" content={props.description} />
+    <meta name="robots" content="none" />
     <link rel="canonical" href={props.url} />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />

@@ -21,7 +21,7 @@ HTMLではlang属性に言語コードを指定することで、その要素ま
 ```css
 :lang(ja) {
     // lang="ja" にも lang="ja-JP" にもマッチ
-    // 子孫要素にもマッチする
+    // 子孫要素にもマッチする(継承ではなく)
     font-family: 'こうして日本語対応フォントを書くなど'
 }
 [lang="ja"] {
@@ -30,7 +30,8 @@ HTMLではlang属性に言語コードを指定することで、その要素ま
 }
 ```
 
-JavaScriptでは、`Intl`系メソッドの第一引数にて指定することで、日付形式をローカライズできます。
+JavaScriptでは、`Intl`系メソッドの第一引数にて指定することで、日付表記や価格表記をローカライズできます。詳しくは別の記事で解説してあります。
+[JavaScriptにおける言語コード指定の詳解 | listful](/article/argument-locales)
 
 ```js
 Intl.DateTimeFormat('ja-u-ca-japanese'/* locales引数 */, {

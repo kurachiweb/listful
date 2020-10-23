@@ -1,7 +1,7 @@
 const fs = require('fs');
 const sharp = require('sharp');
 
-const assetPath = './public/img/';
+const assetPath = './public/asset/ogp/';
 
 const splitFileName = fPath => {
   const matched = fPath.match(/(.*?)(\.\w+?)$/);
