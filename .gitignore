@@ -21,3 +21,6 @@ yarn-error.log*
 
 .now
 .vercel
+
+# user setting
+/public/asset/ogp/*.svg

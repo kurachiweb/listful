@@ -1,0 +1,272 @@
+---
+title: 'Intl.DateTimeFormat - 日付表記の変換'
+excerpt: 'Intl.DateTimeFormatは、日付形式を指定言語に合った表記にできる便利なメソッドです。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/intl-locales.png'
+coverImageAlt: 'JavaScriptカテゴリの「Intl.DateTimeFormat日付表記の変換」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-10-25 20:27'
+updated: '2020-10-25 20:27'
+---
+
+## Intl.DateTimeFormatの例
+
+```js
+const dateObj = new Date(2012, 2, 4, 5, 6, 7, 8);
+Intl.DateTimeFormat('ja', { dateStyle: 'full', timeStyle: 'full' }).format(dateObj);
+```
+
+## 第1引数(locales引数)
+
+`ja`や`en-US`など言語コードを指定します。
+
+| 言語コード | 言語 |
+| --- | --- |
+| ja | 日本語 |
+| en-US | アメリカ英語 |
+| ko-KR | 韓国語 |
+| zh-Hans | 中国語(繁体字) |
+| zh-Hant | 中国語(簡体字) |
+
+詳しくは[JavaScriptにおける言語コード指定の詳解](/article/argument-locales)をご覧下さい。
+
+## 第2引数(options引数)
+
+言語以外のオプションをオブジェクト形式で指定します。
+
+```js
+{
+    dateStyle: 'full',
+    timeStyle: 'full'
+} // 例
+```
+
+以下では、言語コードがjaとen-USの場合についての出力を載せます。
+
+### numberingSystem
+
+番号表記法を指定します。[言語コード指定でのu-nu-何か](/article/argument-locales#content__section_3_0)と同じですが、それよりもこのプロパティ値が優先されます。
+
+### calendar
+
+紀年法を指定します。[言語コード指定でのu-ca-何か](/article/argument-locales#content__section_3_1)と同じですが、それよりもこのプロパティ値が優先されます。
+
+### localeMatcher
+
+第1引数で指定した言語コードと、実装が対応している言語コードリストとのマッチングアルゴリズムを指定します。初期値は`best fit`です。
+
+| 指定値 | 説明 |
+| --- | --- |
+| lookup | [BCP47に基づいたアルゴリズム](https://tools.ietf.org/html/rfc4647#section-3.4)を使います |
+| best fit | lookupアルゴリズムと比べて、指定した言語コードにより適する言語設定を探します |
+
+### dateStyle
+
+年月日、指定によっては曜日も出力します。
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| short | 2012/03/04 | 3/4/12 |
+| medium | 2012/03/04 | Mar 4, 2012 |
+| long | 2012年3月4日 | March 4, 2012 |
+| full | 2012年3月4日日曜日 | Sunday, March 4, 2012 |
+
+### timeStyle
+
+時分、指定によっては秒とタイムゾーン名も出力します。
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| short | 5:06 | 5:06 AM |
+| medium | 5:06:07 | 5:06:07 AM |
+| long | 5:06:07 JST | 5:06:07 AM GMT+9 |
+| full | 5時06分07秒 日本標準時 | 5:06:07 AM Japan Standard Time |
+
+### dayPeriod
+
+各言語での表現に合わせて時の表現をするのですが、動作しませんでした。
+動作するようになれば、おそらく[https://github.com/tc39/ecma402/pull/346](https://github.com/tc39/ecma402/pull/346)のような出力になるでしょう。
+
+### timeZone
+
+指定されたタイムゾーンでの時刻を出力します。指定できる値は[3文字のタイムゾーンID](https://publib.boulder.ibm.com/tividd/td/TWS/SC32-1274-02/ja_JA/HTML/SRF_mst269.htm)または[IANA指定のタイムゾーンID](https://www.iana.org/time-zones)です。規定値は、そのOSまたはブラウザが設定しているタイムゾーンに基づきます。
+
+```js
+const dateObj = new Date(2012, 2, 4, 5, 6, 7, 8);
+const options = { hour: 'numeric', minute: 'numeric', timeZone: 'Egypt', timeZoneName: 'long' };
+new Intl.DateTimeFormat('ja', options).format(dateObj);
+// 出力 '4:06 中国標準時'
+```
+
+### hour12
+
+午前・午後の概念がある12時制にするかを指定します。
+
+| 指定値 | 説明 |
+| --- | --- |
+| true | 12時制 |
+| false | 24時制 |
+
+規定では言語によって異なるため、それでは扱いにくいという場合には使うのもありでしょう。第一引数で指定する言語コードのサブタグ(`u-hc-何か`)や`hourCycle`プロパティよりも優先されます。
+
+### hourCycle
+
+`hour12`プロパティに似ていて、時制の指定です。指定値は[言語コード指定でのu-hc-何か](/article/argument-locales#content__section_3_2)と同じで、以下の通りです。
+
+| 指定値 | 説明 |
+| --- | --- |
+| h11 | 午前(午後)は0時から始まり、11時台まで |
+| h12 | 午前(午後)は12時から始まり、次に1時、そして11時台まで |
+| h23 | 0時から始まり、11時台まで |
+| h24 | 24時から始まり、次に1時、そして23時台まで |
+
+第一引数で指定する言語コードのサブタグ(`u-hc-何か`)よりも優先されます。
+
+### formatMatcher
+
+`weekday`, `year`, `month`, `day`, `hour`, `minute`, `second`プロパティの扱い方に関わるアルゴリズムです。このプロパティを指定しなかった場合の規定値は`best fit`です。
+
+`best fit`のアルゴリズムは実装依存なので、出力の統一性に不安がある場合は`basic`指定も良いでしょう。
+
+| 指定値 | 説明 |
+| --- | --- |
+| basic | [ECMAScript仕様に基づいたアルゴリズム](https://tools.ietf.org/html/rfc4647#section-3.4)を使います |
+| best fit | 実装に依存したアルゴリズムを使います |
+
+### era
+
+紀年を出力します。
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| narrow | AD2012年3月4日 | 3 4, 2012 A |
+| short | 西暦2012年3月4日 | 3 4, 2012 AD |
+| long | 西暦2012年3月4日 | 3 4, 2012 Anno Domini |
+
+`calendar`プロパティや言語コードの`u-ca-何か`を使うと、西暦ではない別の紀年法で出力されます。
+
+### year
+
+年を出力します。
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| numeric | 2012年 | 2012 |
+| 2-digit | 12年 | 12 |
+
+### month
+
+月を出力します。
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| numeric | 3月 | 3 |
+| 2-digit | 03月 | 03 |
+| narrow | 3月 | M |
+| short | 3月 | Mar |
+| long | 3月 | March |
+
+### day
+
+日を出力します。
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| numeric | 4日 | 4 |
+| 2-digit | 04日 | 04 |
+
+### weekday
+
+曜日を出力します。
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| narrow | 日 | S |
+| short | 日 | Sun |
+| long | 日曜日 | Sunday |
+
+`narrow`を指定した場合の英語出力は、火曜日も木曜日も<samp>T</samp>になってしまいますので、曜日で区別したい場面では他の指定値を使いましょう。
+
+### hour
+
+時を出力します。
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| numeric | 5時 | 5 AM |
+| 2-digit | 05時 | 05 AM |
+
+### minute
+
+分を出力します。
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| numeric | 6 | 6 |
+| 2-digit | 6 | 6 |
+
+### second
+
+秒を出力します。
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| numeric | 7 | 7 |
+| 2-digit | 7 | 7 |
+
+### fractionalSecondDigits
+
+ミリ秒を指定した桁数(1~3)で出力します。指定値の小数点以下は切り捨てされます。
+2020年10月22日現在、FirefoxやMac Safariでは無視され、Chromeでも`1`未満`4`以上で指定するとエラーになってしまいます。
+
+これと併せて`minute`プロパティを指定すると、`second`プロパティを指定しなくても秒が出力されます。
+
+```js
+const dateObj = new Date(2012, 2, 4, 5, 6, 7, 8);
+Intl.DateTimeFormat('ja', { minute: 'numeric', fractionalSecondDigits: 3 }).format(dateObj);
+// 出力：'06:07.008'
+```
+
+### timeZoneName
+
+タイムゾーン情報を出力します。
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| short | 2012/3/4 JST | 3/4/2012, GMT+9 |
+| long | 2012/3/4 日本標準時 | 3/4/2012, Japan Standard Time |
+
+### 時分秒はセットで
+
+実用的には、オプションで時と分と秒を併せて指定するのが良いでしょう。
+
+#### hour + minute
+
+```js
+options = { hour: string, minute: string }; // 時と分
+```
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| numeric | 5:06 | 5:06 AM |
+| 2-digit | 05:06 | 05:06 AM |
+
+#### hour + minute + second
+
+```js
+options = { hour: string, minute: string, second: string }; // 時分秒
+```
+
+| 指定値 | ja出力 | en-US出力 |
+| --- | --- | --- |
+| numeric | 5:06:07 | 5:06:07 AM |
+| 2-digit | 05:06:07 | 05:06:07 AM |
+
+---
+
+参考リンク
+
+- [Intl - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation)
+- [Intl.DateTimeFormat() コンストラクター - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat)
+- [言語タグ - HTML5](https://htmlcss.jp/html/langtag.html)
