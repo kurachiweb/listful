@@ -149,10 +149,12 @@ a {
     display: inline-block;
     font-family: 'icc0n';
     font-style: normal;
-    text-transform: none;
     font-variant: normal;
     font-weight: normal;
     line-height: 1;
+    -moz-osx-font-smoothing: grayscale;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
   }
 
   &__g_nav_ctrl::before {
@@ -179,6 +181,11 @@ a {
     }
   }
 
+  &__article_jump::before {
+    content: '\e900';
+    font-size: 2rem;
+  }
+
   &__prev_top_arrow::before {
     content: '\e904';
     transform: rotate(180deg);
@@ -192,18 +199,6 @@ a {
   &__prev_arrow::before {
     transform: rotate(180deg);
   }
-}
-
-.article_link_target::after {
-  color: inherit;
-  content: '\e900';
-  display: inline-block;
-  font-family: icc0n;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1.75;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
 }
 
 .list_no_buret {
@@ -307,7 +302,6 @@ a {
 
   &_target {
     background-color: $contentBGC;
-    flex-wrap: nowrap;
     padding: 0.438rem 1rem 0.125rem 1.5rem;
     text-decoration: none;
 
@@ -338,7 +332,10 @@ a {
     flex: 1;
     font-size: 1.5rem;
     font-weight: normal;
-    padding-right: 0.75rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    padding-right: 0.875rem;
+    word-break: break-all;
   }
 }
 
@@ -347,13 +344,13 @@ a {
 }
 
 .article_link {
-  &_target::after {
-    font-size: 2rem;
-    padding-left: 0.625rem;
+  &_target {
+    flex-wrap: nowrap;
   }
 
   &_title {
     border-right: 2px solid $contentBGC_focus;
+    margin-right: 0.625rem;
 
     @media (prefers-color-scheme: dark) {
       & {
@@ -433,20 +430,20 @@ a {
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
 
   h3 {
-    font-size: 1.313rem;
+    font-size: 1.5rem;
   }
 
   h4 {
-    font-size: 1.188rem;
+    font-size: 1.313rem;
   }
 
   h5,
   h6 {
-    font-size: 1.064rem;
+    font-size: 1.188rem;
   }
 
   p {
@@ -490,8 +487,8 @@ a {
     text-align: left;
   }
 
-  samp,
-  code {
+  code,
+  samp {
     font-size: 1.125rem;
     padding: 0.25em 0;
     word-break: break-all;
@@ -503,14 +500,15 @@ a {
   }
 
   pre > code,
-  p > samp,
   :not(kbd) > kbd {
     background-color: $codeBGC;
+    color: $textGrayC_darkM;
     filter: invert(1) saturate(2.5) hue-rotate(180deg);
 
     @media (prefers-color-scheme: dark) {
       & {
         background-color: $codeBGC_darkM;
+        color: $textC_darkM;
         filter: saturate(1.5);
       }
     }
@@ -557,7 +555,14 @@ a {
   }
 
   hr {
+    border: 1px solid $textGrayC;
     margin: 2rem 0;
+
+    @media (prefers-color-scheme: dark) {
+      & {
+        border-color: $textGrayC_darkM;
+      }
+    }
   }
 }
 
