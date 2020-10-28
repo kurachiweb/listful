@@ -1,0 +1,103 @@
+---
+title: 'JavaScriptでエスケープ/アンエスケープがしたい'
+excerpt: '文字列をそのまま使うと脆弱性になってしまうのでエスケープしたい、URLにエスケープ文字が含まれているかもしれないのでアンエスケープしたいといった場面には、JavaScriptのメソッドを使いましょう。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/escape-unescape.png'
+coverImageAlt: 'JavaScriptカテゴリの「JavaScriptでエスケープ/アンエスケープがしたい」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-10-27 23:42'
+updated: '2020-10-27 23:42'
+---
+
+エスケープは脆弱性回避のためによく使われます。
+
+アンエスケープは、出力処理の合間などで使われます。
+
+## エスケープ
+
+### encodeURI
+
+文字列をURIとして使えるようにエスケープします。
+
+```js
+encodeURI('https://ダイヤの斧.example/テスト.html?q=検索&p=2');
+// https://%E3%83%80%E3%82%A4%E3%83%A4%E3%81%AE%E6%96%A7.example/%E3%83%86%E3%82%B9%E3%83%88.html?q=%E6%A4%9C%E7%B4%A2&p=2
+```
+
+エスケープの**対象外**となる文字 : A-Z a-z 0-9 : ; , / - _ . @ ? & = + # $ ! ~ * ' ( )
+
+### encodeURIComponent
+
+文字列をURIとして使えるようにエスケープします。`encodeURI`とは違ってスラッシュやコロンまでもエスケープされてしまうので、URLの全体ではなくクエリ文字列(?以降の文字列)に含まれる値用として使いましょう。
+
+エスケープの**対象外**となる文字 : A-Z a-z 0-9 - _ . ! ~ * ' ( )
+
+```js
+encodeURIComponent('検索'); // %E6%A4%9C%E7%B4%A2
+```
+
+### URLSearchParams
+
+URLのクエリ文字列をオブジェクト形式で取得するのによく使われる`URLSearchParams`ですが、URLエスケープにも使えます。
+
+`encodeURI`や`encodeURIComponent`は半角スペースを<samp>%20</samp>に置き換えるのに対し、これは<samp>+</samp>に置き換えます。
+
+```js
+encodeURI('Ha lf'); // Ha%20lf
+new URLSearchParams('Ha lf').toString().slice(0, -1); // Ha+lf
+```
+
+### HTML文字列のエスケープ
+
+`element.innerHTML`や`element.outerHTML`に値を設定する場合には、HTMLにとって意味のある記号をエスケープする必要があります。HTML用のエスケープメソッドはないので、自前で用意する必要があります。
+
+```js
+const escapeHTML = function (str) {
+  return str
+    .replace('<', '&lt;')
+    .replace('>', '&gt;')
+    .replace('&', '&amp;')
+    .replace('"', '&quot;')
+    .replace("'", '&#39;');
+};
+escapeHTML('<p id="output"></p>');
+// &amp;lt;p id=&quot;output"&gt;</p>
+```
+
+## アンエスケープ
+
+### decodeURI
+
+URI形式にエスケープされた文字列をアンエスケープします。`encodeURI`の逆です。
+
+```js
+// ブラウザのアドレスバーには https://ダイヤの斧.example/テスト.html と表示されていますが、
+const url = location.href;
+element.textContent = url;
+// 実際は https://xn--u9jwf9ctgl51y.example/%E3%83%86%E3%82%B9%E3%83%88.html なので、そのように出力されてしまいます。
+element.textContent = decodeURI(url);
+// https://xn--u9jwf9ctgl51y.example/テスト.html ドメイン名以外はアンエスケープできました。
+```
+
+### decodeURIComponent
+
+URIの形式にエスケープされた文字列をアンエスケープします。`encodeURIComponent`の逆です。
+
+```js
+decodeURIComponent('%E6%A4%9C%E7%B4%A2'); // 検索
+```
+
+### URLSearchParams
+
+先ほど`URLSearchParams`でエンコードができると書きましたが、実はデコードもできちゃいます。
+
+```js
+new URLSearchParams('q=' + '%E6%A4%9C%E7%B4%A2').get('q'); // 検索
+```
+
+---
+
+参考リンク
+
+- [encodeURIComponentが世界基準だと誤解してた話 - Qiita](https://qiita.com/shibukawa/items/c0730092371c0e243f62)
