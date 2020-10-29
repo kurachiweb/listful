@@ -1,0 +1,89 @@
+---
+title: 'CSSのパーセント値は何に対する割合なのか'
+excerpt: 'パーセント指定には、全て基準があります。何に対する割合なのかを知っておくことで、レスポンシブWebデザインが上手くできるようになります。'
+category: 'CSS'
+coverImage: '/asset/ogp/css-percent-basis.png'
+coverImageAlt: 'CSSカテゴリの「CSSのパーセント値は何に対する割合なのか」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-10-30 07:33'
+updated: '2020-10-30 07:33'
+---
+
+前提として、要素の幅とは、marginもborderもpaddingも含まないピクセル幅のことを指します。ただしその要素の`box-sizing`が`border-box`になっていた場合は、marginは含めずborderとpaddingを含めた幅となります。
+
+<CSSBoxModel borderText="border ... box-sizing: border-box;の場合はこのborderまでを含んだ幅" contentText="content ... 通常はこの幅" />
+
+div要素やp要素などはデフォルトで`display: block`、つまりブロック要素ですが、CSSで`display: inline;`と指定すればインライン要素として扱われます。逆にa要素やspan要素といったインライン要素は、`display: inline-block;`などでブロック要素にできます。
+
+包括ブロックとは、**直近のブロック要素**またはページのビューポートのことです。
+
+```html
+<section style="position: relative;">
+  <div>
+    <p>この要素の包括ブロックは、直近のブロック要素つまりdiv要素</p>
+    <p style="position: absolute;">この要素の包括ブロックは、positionがstaticでない直近の親つまりsection要素</p>
+    <p style="position: fixed;">この要素の包括ブロックは、ページのビューポート</p>
+  </div>
+  <span>
+    <p>この要素の包括ブロックは、直近のブロック要素つまりspanではなくsection要素</p>
+  </span>
+</section>
+<section>
+  <span style="display: inline-block;">
+    <p>この要素の包括ブロックは、直近のブロック要素つまりdisplayがinline-blockとなっているspan要素</p>
+  </span>
+</section>
+```
+
+[MDNの解説](https://developer.mozilla.org/ja/docs/Web/CSS/Containing_block#Identifying_the_containing_block)には、もっと詳しい情報があります。
+
+## width
+
+包括ブロックの幅
+
+## height
+
+- 要素自身の`height`が`%`以外で指定されている
+- 包括ブロックの`height`が`%`以外で指定されている
+- `%`指定だとしても、html要素(`:root`)までの祖先要素全てに高さが指定されている
+
+のいずれかに当てはまるケースで、このプロパティの指定が効きます。
+
+## margin
+
+包括ブロックの幅
+
+`margin-top`と`margin-bottom`も同様に、包括ブロックの幅
+
+## padding
+
+包括ブロックの幅
+
+`padding-top`と`padding-bottom`も同様に、包括ブロックの幅
+
+## top, bottom
+
+包括ブロックの高さ
+
+## right, left
+
+包括ブロックの幅
+
+## font-size
+
+親要素のフォントサイズに対する割合
+
+単位`em`とほぼ同じで、`200%`は`2em`と同じ大きさになります。
+
+## line-height
+
+その要素のフォントサイズに対する割合
+
+単位`em`や単位なしとほぼ同じです。
+
+---
+
+参考リンク
+
+- [encodeURIComponentが世界基準だと誤解してた話 - Qiita](https://qiita.com/shibukawa/items/c0730092371c0e243f62)

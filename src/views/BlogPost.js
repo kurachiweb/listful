@@ -10,13 +10,13 @@ class BlogPost extends Component {
     super(props);
   }
 
+  // マークダウンパースエンジンとの競合を避けるためエスケープしていたHTMLを、元に戻す
   UnescapeTable = {
     '&#124;': '|',
     '&#x7c;': '|',
     '&#x60;': '`',
     '&#96;': '`'
   };
-
   UnescapeHTMLEntity = props => {
     return Children.map(props.children, child => {
       if (child.props) {
@@ -38,18 +38,21 @@ class BlogPost extends Component {
     });
   };
 
+  // 内部リンクと外部リンクを区別する
   AnchorElem = props => {
     const URLParts = new URL(props.href, config.url);
     const thisSiteURL = new URL(config.url);
     if (URLParts.origin === thisSiteURL.origin) {
       // 同一オリジン、つまり確実にルーティングが効く
       if (URLParts.pathname.indexOf('/article') === 0) {
+        // 相対パス指定
         return (
           <Link href="/article/[slug]" as={props.href}>
             <a>{props.children}</a>
           </Link>
         );
       } else {
+        // 絶対パス指定
         return (
           <Link href={props.href}>
             <a>{props.children}</a>
@@ -57,6 +60,7 @@ class BlogPost extends Component {
         );
       }
     } else {
+      // 別のオリジン
       return (
         <a href={props.href} target="_blank" rel="nofollow noopener">
           {props.children}
@@ -65,6 +69,7 @@ class BlogPost extends Component {
     }
   };
 
+  // 目次生成などで使うために、ヘディング要素にIDを付ける
   HCount = {
     h2: 0,
     h3: 0,
@@ -75,7 +80,6 @@ class BlogPost extends Component {
   HCountReseter = (...props) => {
     props.forEach(prop => (this.HCount[prop] = 0));
   };
-
   H2Elem = props => {
     this.HCountReseter('h3', 'h4', 'h5', 'h6');
     const id = `content__section_${this.HCount.h2++}`;
@@ -101,6 +105,25 @@ class BlogPost extends Component {
     return <h6 id={id}>{props.children}</h6>;
   };
 
+  // marginとborderとpaddingについて説明するのに使う
+  CSSBoxModel = props => {
+    const textStyle = { fontSize: '0.875rem', margin: '0 0 0.125rem' };
+    return (
+      <div style={{ backgroundColor: '#f9ce9f', margin: '1.5rem 0', padding: '0.125rem 3% 0.75rem' }}>
+        <p style={textStyle}>{props.marginText || 'margin'}</p>
+        <div style={{ backgroundColor: '#fee49c', padding: `0.125rem ${3 / 0.97 ** 2}% 0.75rem` }}>
+          <p style={textStyle}>{props.borderText || 'border'}</p>
+          <div style={{ backgroundColor: '#c4d18b', padding: `0.125rem ${3 / 0.97 ** 3}% 0.75rem` }}>
+            <p style={textStyle}>{props.paddingText || 'padding'}</p>
+            <div style={{ backgroundColor: '#99c5ca', padding: `0.125rem ${3 / 0.97 ** 4}%` }}>
+              <p style={{ margin: 0 }}>{props.contentText || 'content'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   components = {
     code: CodeBlock,
     HTMLUnescape: this.UnescapeHTMLEntity,
@@ -109,7 +132,8 @@ class BlogPost extends Component {
     h3: this.H3Elem,
     h4: this.H4Elem,
     h5: this.H5Elem,
-    h6: this.H6Elem
+    h6: this.H6Elem,
+    CSSBoxModel: this.CSSBoxModel
   };
 
   render() {

@@ -318,7 +318,7 @@ a {
     padding: 0.125rem 0.75rem;
     position: relative;
     top: 0.75rem;
-    left: 0.75rem;
+    left: 0.813rem;
     text-decoration: none;
 
     @media (prefers-color-scheme: dark) {
@@ -330,7 +330,7 @@ a {
 
   &_title {
     flex: 1;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: normal;
     margin-top: 1.25rem;
     margin-bottom: 1.25rem;
@@ -425,7 +425,7 @@ a {
     font-weight: normal;
 
     &:not(:first-child) {
-      margin: 2em 0 -0.5em;
+      margin: 2em 0 -0.375em;
     }
   }
 
@@ -458,7 +458,7 @@ a {
   table {
     border-collapse: collapse;
     border-top: 1px solid $textGrayC;
-    margin: 1rem 0 2rem;
+    margin: 1.25rem 0 2.5rem;
     width: 100%;
 
     @media (prefers-color-scheme: dark) {
@@ -585,12 +585,6 @@ a {
   }
 }
 
-@media (max-width: 767px) {
-  .pagination__link__num {
-    display: none;
-  }
-}
-
 @media (max-width: 1299px) {
   .l_in {
     width: 91.25%;
@@ -633,6 +627,19 @@ a {
   }
 
   #g_nav {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .main {
+    margin-left: 0;
+    margin-right: 0;
+    width: auto;
+    max-width: none;
+  }
+
+  .pagination__link__num {
     display: none;
   }
 }
