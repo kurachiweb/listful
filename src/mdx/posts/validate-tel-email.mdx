@@ -1,0 +1,67 @@
+---
+title: '電話番号・メールアドレス・郵便番号の検証(JavaScript)'
+excerpt: '電話番号もメールアドレスも郵便番号も、お問い合わせフォームを使うユーザーに入力を求めることが多いですが、正しくない形式で入力されるかもしれないので、必ずバリデーションチェックをしましょう。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/validate-tel-email.png'
+coverImageAlt: 'JavaScriptカテゴリの「電話番号・メールアドレス・郵便番号の検証」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-10-31 17:14'
+updated: '2020-10-31 17:14'
+---
+
+## 電話番号
+
+日本国内での電話番号は`0xx-xxx-xxxx`(10桁)または`0x0-xxxx-xxxx`(11桁)のような形式です。これだけでも、下記のように表記パターンがたくさんあり、正規表現だけを使って、フォーム欄における全ての考えられる入力をカバーするのは難しいでしょう。
+
+- 市外局番と市内局番と加入者番号を、ハイフンで区切ったり区切らなかったり(`0xxxxxxxxx`)
+- 市外局番または市内局番を、カッコで囲ったり囲わなかったり(`(0xx)xxx-xxxx)`)
+- 市外局番は[1桁のところがあれば4桁のところもあったり](https://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a.html#q2)(`0xxxx-x-xxxx`)
+- 国内プレフィックスを示す`0`を、付けたり省略したり(`xxx-xx-xxxx`)
+
+確実に正しい形式の電話番号であると判定する必要がある場合は、Google製電話番号パーサーライブラリの[Libphonenumber](https://github.com/google/libphonenumber/blob/master/javascript/i18n/phonenumbers/demo-compiled.js)([使い方](https://qiita.com/the_red/items/fcedd5033530b7ff7ee7))を使いましょう。自力でパターンを網羅してテストをするよりも大分楽ですし、国際電話番号にも対応できます。
+
+記号を除いた桁数を調べるだけの単純なアルゴリズムで良ければ、下のコードを自由にお使いください。
+
+```js
+// 国内プレフィックスは省略しない想定
+// - ( ) の記号がどれだけ適当に沢山あっても電話番号扱いになるので注意
+telInputElem.addEventListener('change', function (e) {
+    const telDelimiter = /-|\(|\)/g;
+    const telPattern = /^[0-9]{10,11}$/;
+    const value = e.target.value.replace(telDelimiter, '');
+    const isVaild = telPattern.test(value);
+    vaildResultElem.textContent = isVaild ? '' : '電話番号を入力してください。';
+});
+```
+
+## メールアドレス
+
+メールアドレスの入力検証は、HTML5の機能を使って驚くほど簡単にできます。
+
+```html
+<input type="email">
+```
+
+これだけです。ブラウザが内部的に次のような正規表現で検証しています。
+
+```regexp
+/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+```
+
+## 郵便番号
+
+<p><time dateTime="1998-02-02">1998年2月2日</time>から日本の郵便番号は7桁と決まっているので、ハイフンの有無に気を付けるのみです。</p>
+
+```regexp
+/^\d{3}-?\d{4}$/
+```
+
+---
+
+参考リンク
+
+- [総務省｜電気通信番号制度｜電話番号に関するQ&A](https://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a.html)
+- [日本の電話番号計画 - Wikipedia](https://ja.wikipedia.org/wiki/%E6%97%A5%E6%9C%AC%E3%81%AE%E9%9B%BB%E8%A9%B1%E7%95%AA%E5%8F%B7%E8%A8%88%E7%94%BB)
+- [HTML Standard](https://html.spec.whatwg.org/multipage/input.html#email-state-(type%3Demail))
+- [郵便番号が7桁になったのはいつからですか？ - 日本郵便](https://www.post.japanpost.jp/question/36.html)
