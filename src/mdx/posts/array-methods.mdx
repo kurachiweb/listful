@@ -1,0 +1,144 @@
+---
+title: '配列メソッドの実用的サンプル(JavaScript)'
+excerpt: '配列のメソッド一覧を解説しているサイトは数多くありますが、サンプルコードを見るだけでは実際の使い方をイメージできないことも(特にcopyWithinとreduceRight)。実際に近いサンプルを載せています。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/array-methods.png'
+coverImageAlt: 'JavaScriptカテゴリの「配列メソッドの実用的サンプル」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-2 21:00'
+updated: '2020-11-2 21:00'
+---
+
+## メソッドを短く説明
+
+- ループ
+    - **forEach** : 全要素に対して指定関数を実行しますが、`undefined`を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach))
+    - **map** : 全要素に対して指定関数を実行し、それぞれの返り値からなる配列を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/map))
+- 追加・削除
+    - **push** : 配列の後尾に要素を追加して、配列を変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/push))
+    - **pop** : 配列から最後の要素を取り除いてその値を返し、配列を変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/pop))
+    - **unshift** : 配列の先頭に要素を追加して、配列を変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift))
+    - **shift** : 配列から最初の要素を取り除いてその値を返し、配列を変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/shift))
+    - **concat** : 引数の配列を後ろに結合した配列を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/concat))
+- 取り出し
+    - **slice** : 指定範囲の要素からなる配列を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/slice))
+- 探索
+    - **indexOf** : 指定値と等しい最初の要素のインデックス番号を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf))
+    - **lastIndexOf** : 指定値と等しい最後の要素のインデックス番号を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf))
+    - **includes** : 指定値と等しい要素があるかの、booleanを返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/includes))
+    - **find** : 指定関数による条件を満たす最初の要素の値を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/find))
+    - **findIndex** : 指定関数による条件を満たす最初の要素のインデックス番号を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex))
+- 条件
+    - **every** : 全ての要素が指定関数による条件を満たすかの、booleanを返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/every))
+    - **some** : いずれかの要素が指定関数による条件を満たすかの、booleanを返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/some))
+    - **filter** : 指定関数による条件を満たす要素からなる配列を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/filter))
+- 置換
+    - **fill** : 指定範囲の要素を指定値で置き換えた、配列に変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/fill))
+    - **splice** : 要素を追加または置換または削除して、配列を変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/splice))
+    - **copyWithin** : 配列の指定場所を同じ配列内の指定範囲にある値で置き換えた、配列に変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin))
+- 文字列化
+    - **join** : 全要素の値を指定文字列でつなげた、文字列を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/join))
+    - **toString** : 全要素の値を、コンマでつなげた文字列を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/toString))
+    - **toLocaleString** : 全要素の値を地域に合った形式に変換して、コンマでつなげた文字列を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/toLocaleString))
+- イテレーション
+    - **entries** : それぞれの要素のインデックス番号と値が格納されたイテレータを返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/entries))
+    - **keys** : それぞれの要素のインデックス番号が格納されたイテレータを返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/keys))
+    - **values** : それぞれの要素の値が格納されたイテレータを返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/values))
+- 順序変更
+    - **reverse** : 配列の順番を逆にしたものに変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse))
+    - **sort** : 全要素を並び替えて、配列を変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/sort))
+- 単一化
+    - **reduce** : 先頭とその次の要素を指定関数によって単一の値にするのを、要素が1つになるまで繰り返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce))
+    - **reduceRight** : 後尾とその前の要素を指定関数によって単一の値にするのを、要素が1つになるまで繰り返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight))
+
+## サンプルコード
+
+### forEach
+
+以下ではHTML要素に変更を加えます。関数内で完結するので、返り値を得る必要はありません。
+
+```js
+const elems = document.querySelectorAll('.data_table td:first-child');
+[...elems].forEach((elem, i) => elem.textContent = i);
+```
+
+### map
+
+以下では記事一覧のデータから、記事名を取り出して配列にします。
+
+```js
+const titles = posts.map(post => post.title);
+```
+
+### indexOf
+
+以下では単語の重複を除去します。`new Set`が使えないブラウザでも動作します。
+
+```js
+const words = allWords.filter((cat, i, arr) => arr.indexOf(cat) === i);
+```
+
+### findIndex
+
+以下では、ある記事IDが何番目の記事のIDなのかを調べます。**Gatsby**などで使われやすいです。
+
+```js
+const postIndex = posts.findIndex(post => post.slug);
+```
+
+### filter
+
+以下では行数カウンタを作るために、textarea要素から取得した複数行のテキストを、行ごとに配列の要素にして空行は除去します。
+
+```js
+const inputElem = document.querySelector('.input__text__multi_line');
+const contentEachLine = inputElem.value.split('\n');
+const vaildLineCount = contentEachLine.filter(Boolean).length;
+```
+
+### splice + concat + copyWithin
+
+以下では、月初から月末までの曜日を配列にします。
+
+```js
+const weekday = ['日', '月', '火', '水', '木', '金', '土'];
+const nowDate = new Date(); // 2020-12-18
+const firstWeekday = new Date(nowDate.setDate(0)).getDay();
+const monthCount = new Date(nowDate.getFullYear(), nowDate.getMonth() + 2, 0).getDate();
+const weekdayShift = weekday.splice(firstWeekday + 1).concat(weekday);
+const monthWeekday = weekdayShift.concat(Array(monthCount - 7));
+for (let day = 0; day < monthCount; day += 7) {
+    monthWeekday.copyWithin(day, 0, 7);
+}
+// monthWeekday = ['火', '水', '木', '金', '土', '日', '月', '火', '水', '木', '金', '土', '日', '月', '火', '水', '木', '金', '土', '日', '月', '火', '水', '木', '金', '土', '日', '月', '火', '水', '木']
+```
+
+`splice()`がポイントで、配列の指定インデックス以降を取り除いた配列に変更しつつ、取り除かれた要素からなる配列が次の`concat()`に繋がり、後ろに連結されます。前にあった要素を後ろに並べているのです。
+
+### entries
+
+以下では、デバッグのためにログに出力します。
+
+```js
+// token = ['<', 'p', '>', 'title', '<', '/', 'p', '>']
+for (const [key, value] of token.entries()) {
+    console.log(`${key}番目はの値は${value}です`);
+}
+```
+
+### reduce
+
+以下では表から数字を取得して、その平均値を求めます。
+
+```js
+const dataElems = document.querySelectorAll('.data_table td:nth-child(3)');
+const nums = [...dataElems].map(elem => +elem.textContent).filter(Number.isFinite);
+const average = nums.reduce((leftVal, rightVal) => leftVal + rightVal) / nums.length;
+```
+
+---
+
+参考リンク
+
+- [Array - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array)

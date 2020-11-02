@@ -30,6 +30,7 @@ $defListBGC_darkM: hsl(210, 25%, 38%);
 :root {
   background-color: $rootBGC;
   height: 100%;
+  scroll-behavior: smooth;
 
   @media (prefers-color-scheme: dark) {
     & {
@@ -588,7 +589,7 @@ a {
 @media (max-width: 1299px) {
   .l_in {
     width: 91.25%;
-    max-width: 600px;
+    max-width: 700px;
   }
 
   #g_nav_ctrl:checked ~ #g_nav {

@@ -42,7 +42,10 @@ class BlogPost extends Component {
   AnchorElem = props => {
     const URLParts = new URL(props.href, config.url);
     const thisSiteURL = new URL(config.url);
-    if (URLParts.origin === thisSiteURL.origin) {
+    if (props.href[0] === '#') {
+      // ページ内アンカー
+      return <a href={props.href}>{props.children}</a>;
+    } else if (URLParts.origin === thisSiteURL.origin) {
       // 同一オリジン、つまり確実にルーティングが効く
       if (URLParts.pathname.indexOf('/article') === 0) {
         // 相対パス指定

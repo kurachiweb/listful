@@ -19,7 +19,7 @@ if (typeof ___ === 'string') { /* 何か処理 */ }
 
 ## typeof演算子への入力別返り値
 
-| 種類 | 戻り値 | 当てはまる例 |
+| 種類 | 返り値 | 当てはまる例 |
 | --- | --- | --- |
 | 数値 | "number" | `635, -28.1, 1e3, 0x5fff, NaN, Infinity, Number('41')` |
 | 文字列 | "string" | <HTMLUnescape>`"foo bar'', "", &#x60;テンプレート文字列&#x60;, String(), Date()`</HTMLUnescape> |
@@ -41,9 +41,18 @@ if (typeof ___ === 'string') { /* 何か処理 */ }
 | `NaN` | "number" |
 | 配列 | "object" |
 | `Element.attributes` | "object" |
-| `document.querySelector(___)` | "object" |
+| `document.querySelectorAll(___)` | "object" |
 | `document.getElementByClassName(___)` | "object" |
 | `document.all` | "undefined" |
 | `new Boolean()` | "object" |
 | `new String()` | "object" |
 | `new Number()` | "object" |
+
+`document.all`は非推奨なので、`document.querySelectorAll('*')`を使ってください。
+
+---
+
+参考リンク
+
+- [typeof - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Operators/typeof)
+- [Document.all - Web API | MDN](https://developer.mozilla.org/ja/docs/Web/API/Document/all)

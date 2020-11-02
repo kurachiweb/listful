@@ -14,10 +14,10 @@ updated: '2020-10-31 17:14'
 
 日本国内での電話番号は`0xx-xxx-xxxx`(10桁)または`0x0-xxxx-xxxx`(11桁)のような形式です。これだけでも、下記のように表記パターンがたくさんあり、正規表現だけを使って、フォーム欄における全ての考えられる入力をカバーするのは難しいでしょう。
 
-- 市外局番と市内局番と加入者番号を、ハイフンで区切ったり区切らなかったり(`0xxxxxxxxx`)
-- 市外局番または市内局番を、カッコで囲ったり囲わなかったり(`(0xx)xxx-xxxx)`)
-- 市外局番は[1桁のところがあれば4桁のところもあったり](https://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a.html#q2)(`0xxxx-x-xxxx`)
-- 国内プレフィックスを示す`0`を、付けたり省略したり(`xxx-xx-xxxx`)
+- 市外局番と市内局番と加入者番号を、ハイフンで区切ったり区切らなかったり ... `0xxxxxxxxx`
+- 市外局番または市内局番を、カッコで囲ったり囲わなかったり ... `(0xx)xxx-xxxx`
+- 市外局番は[1桁のところがあれば4桁のところもあったり](https://www.soumu.go.jp/main_sosiki/joho_tsusin/top/tel_number/q_and_a.html#q2) ... `0xxxx-x-xxxx`
+- 国内プレフィックスを示す`0`を、付けたり省略したり ... `xxx-xx-xxxx`
 
 確実に正しい形式の電話番号であると判定する必要がある場合は、Google製電話番号パーサーライブラリの[Libphonenumber](https://github.com/google/libphonenumber/blob/master/javascript/i18n/phonenumbers/demo-compiled.js)([使い方](https://qiita.com/the_red/items/fcedd5033530b7ff7ee7))を使いましょう。自力でパターンを網羅してテストをするよりも大分楽ですし、国際電話番号にも対応できます。
 
