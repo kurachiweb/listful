@@ -1,0 +1,221 @@
+---
+title: 'オブジェクトでも配列のメソッドを使いたい(JavaScript)'
+excerpt: 'オブジェクトの操作メソッドは配列に比べて少なすぎます。mapもfilterもfindもオブジェクトは使えません。そこで、配列のメソッドの一部が使えるラッパーオブジェクトを作りました。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/object-array-methods.png'
+coverImageAlt: 'Otherカテゴリの「オブジェクトでも配列のメソッドを使いたい」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-5 11:16'
+updated: '2020-11-5 11:16'
+---
+
+配列には[30以上のメソッドがあります](/article/array-methods#content__section_0)。一方でオブジェクトは、、、
+
+```js
+({}).forEach; // undefined
+({}).map; // undefined
+({}).filter; // undefined
+({}).every; // undefined
+({}).some; // undefined
+({}).fill; // undefined
+({}).reduce; // undefined
+({}).toString; // function toString() { [native code] }
+```
+
+これでは`Object.entries()`で配列にしたくなってしまいますが、元のオブジェクトへの参照は保てません。
+
+配列とオブジェクトは、どちらも値を格納することができますが、できることは大きく違うようです。とはいえ、APIを通してJSONデータを取得することが多い昨今のWeb開発において、オブジェクトの操作は需要が高いのではないでしょうか(特に`map`と`filter`)。
+
+オブジェクトにはインデックス番号でのアクセスが基本的にできず、ES2015以前はオブジェクトのプロパティの順序が保証されていなかったことから、`indexOf`などオブジェクトでは使えない配列メソッドもあります。ここでは、できる限りのメソッドを取り上げます。
+
+## オブジェクトのラッパーオブジェクトを作る
+
+ラッパーオブジェクトの名前は、**objency**とします。efficiency objectの略です。IE8以上で動くものをこれから作っていきます。
+
+まずはラッパーオブジェクトを作るところからです。
+
+```js
+(function (root) {
+  'use strict';
+
+  var Objency = function (originObj) {
+    if (!originObj || Object.prototype.toString.call(originObj) !== '[object Object]') {
+      // プレーンオブジェクトのみを受け付ける
+      throw new TypeError('プレーンオブジェクトでなければなりません。');
+    } else if (originObj.constructor && originObj.hasOwnProperty('constructor')) {
+      // prototypeは受け付けない
+      throw new Error('prototypeオブジェクトのようです。お引き取りください。');
+    } else if (originObj instanceof Objency) {
+      // Objencyインスタンスはそのまま返す
+      return originObj;
+    }
+    return new Objency.prototype._constructor(originObj);
+  };
+
+  Objency.prototype = {
+    _constructor: function (obj) {
+      // ラッパーオブジェクトに格納する
+      var keys = [];
+      for (var key in obj) keys.push(key);
+      this.$obj = obj;
+      this._keys = keys;
+      this._allKeys = keys.slice();
+    }
+  };
+
+  Objency.prototype._constructor.prototype = Objency.prototype;
+  root.objency = Objency;
+})(window);
+
+// サンプル
+objWrap = objency({foo: 'bar', baz: {qux: 'quux'}, 71: ['corge']});
+// $obj: Object
+//  >  71: ["corge"]
+//  >  baz: {qux: "quux"}
+//  >  foo: "bar"
+// _keys: ["71", "foo", "baz"]
+```
+
+### forEachとmap
+
+ここからは、objencyのメソッドを定義していきます。
+
+```js
+// objWrap.forEach(console.log); で全ての中身を出力する
+forEach: function (callFn, thisArg) {
+  // 配列のforEachに似ているが、引き続きメソッドチェーンができる
+  var keys = this._keys;
+  var obj = this.$obj;
+  if (typeof thisArg === 'undefined') thisArg = undefined;
+  for (var i = 0; i < keys.length; i++) {
+    callFn.call(thisArg, obj[keys[i]], i, obj);
+  }
+  return this;
+}
+
+// objWrap.map(function (value) { return typeof value; }); で全てをtypeof演算子の返り値に変える
+map: function (callFn, thisArg) {
+  // 配列のmapに似ているが、元のオブジェクトを変更する
+  var keys = this._keys;
+  var key;
+  var obj = this.$obj;
+  if (typeof thisArg === 'undefined') thisArg = undefined;
+  for (var i = 0; i < keys.length; i++) {
+    key = keys[i];
+    obj[key] = callFn.call(thisArg, obj[key], i, obj);
+  }
+  return this;
+}
+```
+
+## filter
+
+```js
+// objWrap.filter(Array.isArray); で値が配列であるプロパティ以外は、今後扱われないようになる
+filter: function (callFn, thisArg) {
+  // 配列のfilterに似ているが、元のオブジェクトを変更する
+  var keys = this._keys;
+  var obj = this.$obj;
+  if (typeof thisArg === 'undefined') thisArg = undefined;
+  for (var i = 0; i < keys.length; i++) {
+    if (!callFn.call(thisArg, obj[keys[i]], i, obj)) {
+      keys.splice(i, 1);
+    }
+  }
+  return this;
+}
+```
+
+## every
+
+```js
+every: function (callFn, thisArg) {
+  var keys = this._keys;
+  var obj = this.$obj;
+  if (typeof thisArg === 'undefined') thisArg = undefined;
+  for (var i = 0; i < keys.length; i++) {
+    if (!callFn.call(thisArg, obj[keys[i]], i, obj)) {
+      return false;
+    }
+  }
+  return true;
+}
+```
+
+## some
+
+```js
+some: function (callFn, thisArg) {
+  var keys = this._keys;
+  var obj = this.$obj;
+  if (typeof thisArg === 'undefined') thisArg = undefined;
+  for (var i = 0; i < keys.length; i++) {
+    if (callFn.call(thisArg, obj[keys[i]], i, obj)) {
+      return true;
+    }
+  }
+  return false;
+}
+```
+
+## fill
+
+```js
+fill: function (newVal) {
+  // 配列のfillに似ているが、範囲指定はサポートしない
+  var keys = this._keys;
+  var obj = this.$obj;
+  if (typeof newVal === 'undefined') newVal = undefined;
+  for (var i = 0; i < keys.length; i++) {
+    obj[keys[i]] = newVal;
+  }
+  return this;
+}
+```
+
+## reduce
+
+```js
+reduce: function (callFn, initVal) {
+  var keys = this._keys;
+  var obj = this.$obj;
+  var currentVal;
+  var i = 0;
+  if (typeof initVal === 'undefined') {
+    initVal = undefined;
+    currentVal = obj[keys[0]];
+    i = 1;
+  } else {
+    currentVal = initVal;
+  }
+  for (; i < keys.length; i++) {
+    currentVal = callFn(currentVal, obj[keys[i]], i, obj);
+  }
+  return currentVal;
+}
+```
+
+## setAllKey
+
+`filter()`で減らされたキーリストを元に戻す`setAllKey()`のコードです。
+
+```js
+setAllKey: function () {
+  this._keys = this._allKeys.slice();
+  return this;
+}
+```
+
+## objencyの入手
+
+GitHubからダウンロードできます。利用は完全に自由(CC0)です。
+
+[kurachiweb/objency - GitHub](https://github.com/kurachiweb/objency)
+
+---
+
+参考リンク
+
+- [Array - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array)
+- [JavaScriptでメソッドチェーンを作る - Qiita](https://qiita.com/sawapi/items/279531c88709700d0ff1)

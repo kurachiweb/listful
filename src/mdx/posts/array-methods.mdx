@@ -37,6 +37,9 @@ updated: '2020-11-2 21:00'
     - **fill** : 指定範囲の要素を指定値で置き換えた、配列に変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/fill))
     - **splice** : 要素を追加または置換または削除して、配列を変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/splice))
     - **copyWithin** : 配列の指定場所を同じ配列内の指定範囲にある値で置き換えた、配列に変更します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin))
+- 平坦化
+    - **flat** : 配列の中の配列を展開し、指定値以上の深さが無くなった配列を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/flat))
+    - **flatMap** : `map()`と同じ引数で全ての要素に関数を実行した後、`flat()`を行います。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap))
 - 文字列化
     - **join** : 全要素の値を指定文字列でつなげた、文字列を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/join))
     - **toString** : 全要素の値を、コンマでつなげた文字列を返します。([MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/toString))
@@ -105,7 +108,7 @@ const vaildLineCount = contentEachLine.filter(Boolean).length;
 const weekday = ['日', '月', '火', '水', '木', '金', '土'];
 const nowDate = new Date(); // 2020-12-18
 const firstWeekday = new Date(nowDate.setDate(0)).getDay();
-const monthCount = new Date(nowDate.getFullYear(), nowDate.getMonth() + 2, 0).getDate();
+const monthCount = new Date(nowDate.getFullYear(), nowDate.getMonth() + 2, 0).getDate(); // 31
 const weekdayShift = weekday.splice(firstWeekday + 1).concat(weekday);
 const monthWeekday = weekdayShift.concat(Array(monthCount - 7));
 for (let day = 0; day < monthCount; day += 7) {
