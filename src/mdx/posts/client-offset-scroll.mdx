@@ -1,0 +1,77 @@
+---
+title: 'clientとscrollとoffsetの違い'
+excerpt: 'JavaScriptで取得した要素の位置関係を調べるために、client・scroll・offsetの違いを知っておく必要があります。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/client-offset-scroll.png'
+coverImageAlt: 'JavaScriptカテゴリの「HTML要素の幅・高さ・座標を取得する」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-8 22:23'
+updated: '2020-11-8 22:23'
+---
+
+## 要素オブジェクトのプロパティを取得
+
+```js
+const targetElem = document.querySelector('box');
+targetElem.clientTop; // 数値を出力する
+```
+
+取得できるプロパティの内、要素の位置関係を示すのは以下の通りです。
+
+- 左から
+  - clientLeft
+  - offsetLeft
+  - scrollLeft
+- 上から
+  - clientTop
+  - offsetTop
+  - scrollTop
+- 幅
+  - clientWidth
+  - offsetWidth
+  - scrollWidth
+- 高さ
+  - clientHeight
+  - offsetHeight
+  - scrollHeight
+
+そして、clientとoffsetとscrollの違いは次の通りです。
+
+### Left・Topプロパティ
+
+|| client | offset | scroll |
+| --- | --- | --- | --- |
+| `:root`のmarginを含むか | No | No | No |
+| `:root`のborderを含むか | No | Yes | No |
+| `:root`のpaddingを含むか | No | No | No |
+| 自身のスクロール量を含むか | No | No | Yes |
+| 自身のmarginを含むか | No | Yes | No |
+| 自身のborderを含むか | Yes | Yes | No |
+| 自身のpaddingを含むか | No | No | No |
+
+#### CSSのpositionがabsoluteかfixed
+
+|| client | offset | scroll |
+| --- | --- | --- | --- |
+| ビューポートからのオフセットを含むか | No | Yes | No |
+| 自身のスクロール量を含むか | No | No | Yes |
+| 自身のmarginを含むか | No | Yes | No |
+| 自身のborderを含むか | Yes | Yes | No |
+| 自身のpaddingを含むか | No | No | No |
+
+### Width・Heightプロパティ
+
+|| client | offset | scroll |
+| --- | --- | --- | --- |
+| 自身のスクロール量を含むか | No | No | Yes |
+| 自身のmarginを含むか | No | No | No |
+| 自身のborderを含むか | No | Yes | No |
+| 自身のpaddingを含むか | Yes | Yes | Yes |
+
+---
+
+参考リンク
+
+- [Array - JavaScript | MDN](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array)
+- [JavaScriptでメソッドチェーンを作る - Qiita](https://qiita.com/sawapi/items/279531c88709700d0ff1)
