@@ -1,0 +1,64 @@
+---
+title: 'window.navigatorの豪華すぎる中身'
+excerpt: 'window.navigatorで取得できるNavigatorオブジェクトでは、ブラウザやOS、ハードウェアの情報を取得できるのに加えて、複数の高度なAPIを備えています。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/in-navigator.png'
+coverImageAlt: 'JavaScriptカテゴリの「window.navigatorの豪華すぎる中身」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-12 11:03'
+updated: '2020-11-12 11:03'
+---
+
+`window.navigator`で取得できる`Navigator`オブジェクトは、下記のように多種類の機能がありますが、ブラウザごとの実装差異が大きいです。Chromeはとても高機能で、他のブラウザで使える機能はChromeでも使えることがほとんどです。下記のリストは、Mac Chrome v86での結果です。
+
+- **appCodeName** : 非推奨。ブラウザのコードネームです。`Mozilla`を返すブラウザが多くてあまり役に立ちません。
+- **appName** : 非推奨。ブラウザの名称です。どのブラウザも`Netscape`を返すので役に立ちません。
+- **appVersion** : 非推奨。ブラウザのバージョンです。`5.0`から始まる冗長な文字列を返すブラウザが多くて役に立ちません。
+- **bluetooth** : [Web Bluetooth API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API)用のオブジェクトを返します。Chromium系ブラウザが対応しています。
+- **clipboard** : [Clipboard API](https://developer.mozilla.org/ja/docs/Web/API/Clipboard_API)用のオブジェクトを返します。
+- **connection** : [ネットワーク情報に関するオブジェクト](https://developer.mozilla.org/ja/docs/Web/API/NetworkInformation)を返します。回線速度などが分かります。
+- **cookieEnabled** : Cookieが有効ならtrueを返します。
+- **credentials** : [認証情報管理APIに関するオブジェクト](https://developer.mozilla.org/ja/docs/Web/API/CredentialsContainer)を返します。MDNに[ログイン情報処理のサンプル](https://developer.mozilla.org/ja/docs/Web/API/Web_Authentication_API#Examples)があります。
+- **deviceMemory** : `0.25`, `0.5`, `1`, `2`, `4`, `8` (単位:GB)の中からデバイスのメモリ量に最も近い値を返します。32GB積んでいても返り値は`8`です。
+- **doNotTrack** : サイトによるユーザー追跡を拒否するDo Not Track設定の状態を返します。
+- **geolocation** : [Geolocation API](https://developer.mozilla.org/ja/docs/Web/API/Geolocation)用のオブジェクトを返します。地球上の位置情報を取得できます。
+- **hardwareConcurrency** : CPUのスレッド数(論理プロセッサ数)を返します。正確とは限らず、Mac Firefoxでは実際のスレッド数より少ない値が返されます。
+- **keyboard** : [Keyboard API](https://developer.mozilla.org/ja/docs/Web/API/Keyboard)用のオブジェクトを返します。Chromium系ブラウザが対応しています。
+- **language** : ブラウザで第一に使われている言語の[言語コード](/article/lang-code-list)を返します。
+- **languages** : ブラウザが把握している[言語コード]((/article/lang-code-list))のリストからなる配列を返します。
+- **locks** : [Web Locks API](https://developer.mozilla.org/en-US/docs/Web/API/Lock)用のオブジェクトを返します。複数のタブで開かれるページでローカルのストレージを操作する時に使います。
+- **maxTouchPoints** : デバイスが対応している同時タッチ数を返します。一般的なパソコンなどのタッチ非対応デバイスでは`0`となります。
+- **mediaCapabilities** : [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API)用のオブジェクトを返します。動画再生パフォーマンスの向上のために、メディアタイプやコーデックをサポートしているかを調べる時に使います。
+- **mediaDevices** : WebカメラやマイクをJavaScriptから操作する時に使います。
+- **mediaSession** : [Media Session API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API)用のオブジェクトを返します。MDNに[メディアプレーヤーのロジック](https://developer.mozilla.org/ja/docs/Web/API/MediaSession#Examples)実装例があります。
+- **mimeTypes** : ブラウザがサポートしているMIMETypeのリストを返します。例としてChromium系ブラウザにはPDFビューアがインストールされているので、`type: 'application/pdf'`が含まれます。
+- **onLine** : ネットワークに接続されていれば`true`が返されます。
+- **permissions** : [Permissions API](https://developer.mozilla.org/ja/docs/Web/API/Permissions_API)用のオブジェクトを返します。通知や位置情報取得の権限があるかを調べる時に使います。
+- **platform** : 非推奨。ブラウザの実行環境を示す文字列です。[WHATWGの仕様](https://html.spec.whatwg.org/multipage/system-state.html#dom-navigator-platform)では空文字を返すことも明記しているので、値の正確さを保証できません。
+- **plugins** : 非標準。ブラウザにインストールされたプラグインのリストを返します。Chromium系ブラウザにはPDFビューアがインストールされているので、`name: 'Chromium PDF Viewer'`が含まれます。
+- **presentation** : [Presentation API](https://developer.mozilla.org/en-US/docs/Web/API/Presentation_API)用のオブジェクトを返します。プレゼンテーション機能を実装したい時に使います。
+- **product** : 非推奨。ブラウザの機能的側面からの名前を返します。どのブラウザも`Gecko`を返すので役に立ちません。
+- **productSub** : 非推奨。ブラウザのビルド番号を返します。多くがYYYYMMDDの日付形式なのですが、バージョンアップしても変わらないままなので役に立ちません。
+- **sendBeacon()** : [Beacon API](https://developer.mozilla.org/en-US/docs/Web/API/Beacon_API)を使って、Webサーバーにデータを送ります。サイトのアクセス解析などで使われます。
+- **serviceWorker** : [Service Worker APIに関するオブジェクト](https://developer.mozilla.org/ja/docs/Web/API/ServiceWorkerContainer)を返します。PWAを作る時には欠かせない、JavaScriptの独立した実行環境を扱います。
+- **setAppBadge()** : [Badging API](https://web.dev/badging-api/)を使用して、PWAとして動作しているページのアイコンにバッジを表示します。
+- **storage** : [Storage APIに関するオブジェクト](https://developer.mozilla.org/ja/docs/Web/API/StorageManager)を返します。IndexedDBなどがどのくらいの容量まで使うことができるかの概算値を調べることができます。
+- **usb** : [WebUSB API](https://developer.mozilla.org/en-US/docs/Web/API/USB)用のオブジェクトを返します。接続したUSBデバイスにアクセスして情報を読み取ることができます。
+- **userActivation** : [User Activation](https://mustaqahmed.github.io/user-activation-v2/)用のオブジェクトを返します。ユーザーによる操作がされているかの確認を統一化します。
+- **userAgent** : ブラウザのユーザーエージェント文字列を返します。[歴史的なブラウザ戦争](https://gigazine.net/news/20180311-history-of-user-agent-string/)によって、UAによるブラウザ識別はとても難しいのが現状です。
+- **vendor** : ブラウザのベンダー名を返します。Chromium系ブラウザでは(OperaでもEdgeでも)`Google Inc.`が出力され、Firefoxでは空文字が出力あされてしまうので、役に立ちません。
+- **vendorSub** : 非推奨。ブラウザのベンダー名の内バージョン部分を返します。実際には揃いも揃って空文字を返すので役に立ちません。
+- **vibrate()** : [Vibration API](https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API)を実行して、対応端末をバイブレーションさせます。
+- **wakeLock** : [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API)用のオブジェクトを返します。ディスプレイのスリープやスクリーンセーバーの起動を防ぐことができます。
+- **webkitPersistentStorage** : [File and Directory Entries API](https://developer.mozilla.org/en-US/docs/Web/API/File_and_Directory_Entries_API/Introduction)向けに、永続データ用のストレージへのアクセスを提供します。Chromium系ブラウザが対応しています。
+- **webkitTemporaryStorage** : [File and Directory Entries API](https://developer.mozilla.org/en-US/docs/Web/API/File_and_Directory_Entries_API/Introduction)向けに、一時データ用のストレージへのアクセスを提供します。Chromium系ブラウザが対応しています。
+- **xr** : [WebXR Device API](https://developer.mozilla.org/ja/docs/Web/API/WebXR_Device_API)用のオブジェクトを返します。XR(ARやVR)デバイスを管理します。
+
+クリップボード内容の操作から、USBデバイスの取得やXR体験までできてしまうのは、WebAPIのハッピーセットと言えるのかもしれません。ただそれらのAPIを使って実装しようとすると、対応ブラウザの幅が狭かったり動作がバラバラだったり、情報が少なかったり想定用途がニッチすぎてやる気が出なかったりで苦労は多いような気がします。それでも人より一歩先に新しい機能を使って時代の最先端を走りたいという方は、それぞれのAPIについて深く調べてみると良いでしょう。
+
+---
+
+参考リンク
+
+- [Navigator - Web API | MDN](https://developer.mozilla.org/ja/docs/Web/API/Navigator)
