@@ -1,0 +1,47 @@
+---
+title: 'Vue.jsの属性ショートハンド'
+excerpt: 'どのブラウザも、未訪問リンクは青で訪問済みリンクは紫ですが、厳密にはブラウザごとに僅かな差があります。'
+category: 'Vue'
+coverImage: '/asset/ogp/vue-attr-shorthands.png'
+coverImageAlt: 'Vueカテゴリの「Vue.jsの属性ショートハンド」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-13 13:54'
+updated: '2020-11-13 13:54'
+---
+
+Vueでは`v-`から始まる特別な属性をよく使います。それのショートハンドを使えば短く書くことができるので、プログラムが少し短くなって見た目が良いです。
+
+## v-bind
+
+```vue
+<!-- 省略しない場合 -->
+<a v-bind:href="url">コンテンツ</a>
+
+<!-- コロン(:)だけにできます -->
+<a :href="url">コンテンツ</a>
+
+<!-- 動的引数とも合わせられます -->
+<a :['href']="url">コンテンツ</a>
+```
+
+## v-on
+
+```vue
+<!-- 省略しない場合 -->
+<button v-on:click="doSomething">コンテンツ</button>
+
+<!-- コロン(:)だけにできます -->
+<button @click="doSomething">コンテンツ</button>
+
+<!-- 動的引数とも合わせられます -->
+<button @['click']="doSomething">コンテンツ</button>
+```
+
+Vue v3でも変更はありません。
+
+---
+
+参考リンク
+
+- [Template Syntax | Vue.js v3 document](https://v3.vuejs.org/guide/template-syntax.html#shorthands)

@@ -24,3 +24,4 @@ yarn-error.log*
 
 # user setting
 /public/asset/ogp/*.svg
+/scripts/nodejs-test.js
