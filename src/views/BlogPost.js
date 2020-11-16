@@ -42,7 +42,6 @@ class BlogPost extends Component {
   AnchorElem = props => {
     const URLParts = new URL(props.href, config.url);
     const thisSiteURL = new URL(config.url);
-    console.log(props);
     if (props.href[0] === '#') {
       // ページ内アンカー
       return <a href={props.href} style={props.style}>{props.children}</a>;

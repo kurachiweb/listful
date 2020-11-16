@@ -2,8 +2,8 @@ import { MDXProvider } from '@mdx-js/react';
 import Nav from './Nav';
 import HeaderBanner from '../mdx/headerBanner.mdx';
 import Link from 'next/link';
-import LogoType from '../../public/asset/logotype.svg';
-import LogoTypeInvert from '../../public/asset/logotype-invert.svg';
+import LogoType from '../../public/logo/logotype.svg';
+import LogoTypeInvert from '../../public/logo/logotype-invert.svg';
 
 const Header = ({ categories }) => (
   <header className="l_flex header_wrap">

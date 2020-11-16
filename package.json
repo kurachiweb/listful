@@ -9,6 +9,7 @@
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "format-watch": "npm run format && onchange \"**/*.{js,jsx,json,md}\" -- prettier --write {{changed}}",
     "ogp": "node scripts/svg-to-png.js",
+    "node-fun": "node scripts/nodejs-test.js",
     "deploy": "git push origin main && vercel --prod"
   },
   "dependencies": {
