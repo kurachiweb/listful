@@ -1,0 +1,57 @@
+---
+title: 'navigator.connection.effectiveType'
+excerpt: 'navigator.connection.effectiveTypeは、通信の応答遅延長さやインターネット回線速度から推測される、3gや4gといったネットワーク種類を表した読み取り専用プロパティです。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/threshold-effective-type.png'
+coverImageAlt: 'JavaScriptカテゴリの「navigator.connection.effectiveType」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-16 21:57'
+updated: '2020-11-16 21:57'
+---
+
+`NetworkInformation.downlink`を利用して、インターネット回線速度を示すメガビット毎秒単位の数値を取得できます。
+
+```js
+navigator.connection.downlink; // 8.85
+```
+
+[Webビーコン](https://developer.mozilla.org/ja/docs/Web/API/Navigator/sendBeacon)のような少量データの通信では、回線速度の速さよりも応答遅延の短さが重要です。`NetworkInformation.rtt`により応答遅延をミリ秒単位で取得できます。
+
+```js
+navigator.connection.rtt; // 50
+```
+
+でもこれらの値からは、速いのか遅いのかが伝わりづらいです。そこで、回線速度の程度を文字列で表した`NetworkInformation.effectiveType`を使ってみましょう。
+
+```js
+navigator.connection.effectiveType; // "4g"
+```
+
+## effectiveTypeのしきい値
+
+| downlink | rtt | effectiveType | 説明 |
+| --- | --- | --- | --- |
+| 条件: 回線速度\[Mbps] | 条件: 応答遅延\[ms\] | 出力: 種類(推測) |
+| 0.05以下 | 2000以上 | `slow-2g` | テキストデータの転送にしか向かない |
+| 0.07以下 | 1400以上 | `2g` | アイコンファイルの転送にも耐えうる |
+| 0.7以下 | 270以上 | `3g` | 中〜大サイズの画像や音声、低解像度動画の転送にも耐えうる |
+| 0.7超 | 0以上 | `4g` | 高解像度動画の転送にも耐えうる |
+
+`downlink`プロパティ値が`1.3`(4gクラス)、`rtt`プロパティ値が`500`(3gクラス)の場合、低速な方が優先されて`3g`が出力されました。
+
+データ元は[Network Information APIの仕様書](https://wicg.github.io/netinfo/#dfn-effective-connection-type)ですが、そのデータは稀に更新されます。[2017年6月6日から26日の間](https://web.archive.org/web/20171101000000*/https://wicg.github.io/netinfo/)に現在のデータになりましたが、それ以前は以下の通りでした。
+
+| downlink | rtt | effectiveType |
+| --- | --- | --- |
+| 条件: 回線速度\[Mbps\] | 条件: 応答遅延\[ms\] | 出力: 種類(推測) |
+| 0.05以下 | 1900以上 | `slow-2g` |
+| 0.07以下 | 1300以上 | `2g` |
+| 0.7以下 | 200以上 | `3g` |
+| 0.7超 | 0以上 | `4g` |
+
+---
+
+参考リンク
+
+- [Network Information API](https://wicg.github.io/netinfo/)

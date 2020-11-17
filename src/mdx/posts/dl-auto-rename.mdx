@@ -1,0 +1,126 @@
+---
+title: 'JavaScriptで特殊なファイル名のBlobをダウンロード'
+excerpt: 'Webページからファイルをダウンロードする際に、ファイル名が勝手に変えられるケースがあります。記号を使う、名前が長すぎる、拡張子がないといった場合には注意が必要です。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/dl-auto-rename.png'
+coverImageAlt: 'JavaScriptカテゴリの「JavaScriptで特殊なファイル名のBlobをダウンロード」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-15 23:53'
+updated: '2020-11-15 23:53'
+---
+
+## 前提：ファイルのダウンロード処理
+
+```js
+// このサンプルではテキストファイルをダウンロードする
+const fileDownload = function (fName, content) {
+  if (typeof fName !== 'string' || typeof content === 'undefined') {
+    throw new Error('Require vaild arguments.');
+  }
+
+  const blob = new Blob([content], { type: 'text/plain' });
+  if (window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveOrOpenBlob(blob, fName);
+  } else {
+    const url = URL.createObjectURL(blob);
+    dlElem = document.createElement('a');
+    dlElem.setAttribute('download', fName);
+    dlElem.setAttribute('href', url);
+    document.body.appendChild(dlElem);
+    dlElem.click();
+    setTimeout(function () {
+      dlElem.remove();
+      URL.revokeObjectURL(url);
+    }, 100);
+  }
+};
+
+// ダウンロード実行
+fileDownload('foo', 'barbazqux');
+```
+
+## ファイルシステム
+
+ファイルシステムの仕様上の都合で、またはブラウザの意向により、Webページからのファイルダウンロードの際にファイル名を変えられてしまうことがあります。
+
+理解するために、まずは主なファイルシステムを挙げます。
+
+- **NTFS** : Windows NT系で一般的に使われています。[NT File System](https://ja.wikipedia.org/wiki/NT_File_System)
+- **APFS** : macOSやiOS(10.3以降)で使われています。[Apple File System](https://ja.wikipedia.org/wiki/Apple_File_System)
+
+iOSとMac OSではファイル名の扱い方が違うので、iOSのファイルシステムだけ説明する場合は`APFS(iOS)`と表記します。Androidは機種によってファイルシステムが違うので、ここでは挙げません。
+
+## ファイルシステムの都合でファイル名が変えられるケース
+
+### NTFSとAPFS
+
+- ファイル・ディレクトリ名の重複を許さない
+- 以下は保持される
+    - サロゲートペア文字
+    - 漢字
+    - 絵文字
+    - Unicode制御文字
+    - ファイル名の途中にある連続するドット
+- ファイル名が長すぎると、ベース部分の末尾から削られていく
+- 以下の文字が自動でアンダーバーに置き換わる
+    - " ~ | / \ * < > ? :
+    - 先頭または末尾のスペース
+
+### NTFS
+
+- 以下の文字が自動で取り除かれる
+    - 先頭の1文字以上連続するピリオド(*1)
+- 以下の文字が自動でアンダーバーに置き換わる
+    - 末尾の1文字以上連続する(スペースまたはピリオド)(*1)
+    - 先頭または末尾のスペース(*2)
+- NTFSに限らずWindowsなら、ファイル名ベース部分が予約デバイス名であれば、先頭にアンダーバーが付く
+- 以下の文字が自動で取り除かれる
+    - 先頭または末尾の1文字以上連続するピリオド
+    - 以下の文字が自動でアンダーバーに置き換わる
+    - 先頭または末尾のスペース(*2)
+
+### APFS
+
+- 以下の文字が自動で取り除かれる
+    - 先頭または末尾の1文字以上連続するピリオド(*1)
+- 以下の文字が自動でアンダーバーに置き換わる
+    - 先頭または末尾のスペース(*2)
+
+### APFS(iOS)
+
+Webページからファイルを名前付きでダウンロードする方法は不明です。[無いかもしれません](https://teratail.com/questions/237062#reply-345015)。以下ではGoogleドライブからダウンロードした時の挙動を載せます。
+
+- ダウンロード時にバックスラッシュがハイフンに置き換わる
+- 先頭がピリオドのファイル名は、デフォルトのファイラーでは見れないので注意
+- Googleドライブからダウンロードする場合、あまりにファイル名が長い場合は内部のGDrive File IDがファイル名になる
+    - 半角英数字のみの場合251文字までなら変わらない
+
+## ブラウザによってファイル名が変えられるケース
+
+ここからはブラウザ依存の変換処理です
+
+### 拡張子が未指定だった場合
+
+IEとEdge(Chromiumではない)以外では、Blobのファイルタイプに応じて自動的に拡張子が付く
+
+### ファイル名指定が空文字だった場合
+
+以下の文字列 + Blobのファイルタイプに応じた拡張子となります。
+
+- Chrome: ランダムな[UUID](https://ja.wikipedia.org/wiki/UUID#%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B34)
+- Mac Safari: unknown
+- Firefox: 大文字小文字の英数字かプラスかアンダーバーからなる、8文字のランダム文字
+- Opera: ランダムなUUID
+- Chromium Edge: ランダムなUUID
+- 旧Edge: スペースと括弧で囲われた連番数字(拡張子は付かない)
+
+## ファイルダウンロードの実装はどうするべきか
+
+ファイル名に、ファイルシステムがパス制御として使う文字を含んだ文字列を指定してしまっても、OSが自動で変換してくれるので、基本的に考える必要はないでしょう。
+
+---
+
+参考リンク
+
+- [JavaScriptでファイルダウンロード処理を実現する - Qiita](https://qiita.com/wadahiro/items/eb50ac6bbe2e18cf8813)

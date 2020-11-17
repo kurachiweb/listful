@@ -1,0 +1,45 @@
+---
+title: 'inputフォームの文字数制限で気をつけるべき点'
+excerpt: 'input要素によるテキスト入力欄では、最大文字数をmaxlength属性で指定できます。ところ入力によって、最大10字指定なのにそれを超えて入力できるケースや、9文字までしか入力できないケースもあります。'
+category: 'HTML'
+coverImage: '/asset/ogp/input-size-case.png'
+coverImageAlt: 'HTMLカテゴリの「inputフォームの文字数制限で気をつけるべき点」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-18 7:45'
+updated: '2020-11-18 7:45'
+---
+
+input要素の`maxlength`属性で、入力可能な最大文字数を指定できます。
+
+```html
+<input maxlength="8">
+```
+
+例として、上の例では8文字まで入力できる設定になっています。ですがこの属性を信頼しすぎてはいけません。
+
+## 文字数がオーバーするケース
+
+value属性により、最初から`maxlength`以上の文字数を設定できます。
+
+```html
+<input name="input__text" maxlength="8" value="foooooooooooooooo">
+```
+
+JavaScriptで要素の`value`プロパティを変更する時も、`maxlength`は効かないです。
+
+```js
+const inputElem = document.getElementsByName('input__text')[0];
+inputElem.maxLength; // 8
+inputElem.value = 'internationalization';
+```
+
+そもそもHTML機能による制限を取っ払うことは、Webエンジニアにとって朝飯前です。
+
+```js
+inputText.removeAttribute('maxlength'); // これで制限がなくなる
+```
+
+### 見かけ上文字数が足らないケース
+
+「𩸽」(ホッケという魚)などのサロゲートペア文字は、文字列の`length`プロパティが`2`になるので、文字列の長さが思い通りに取得できなくなります。HTMLフォームでも同様に、1文字で長さ2文字分という扱いになってしまい、8文字まで入力できるフォームに「𩸽𩸽𩸽𩸽」の4文字までしか入力できません。
