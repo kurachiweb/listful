@@ -1,0 +1,55 @@
+---
+title: 'マイナス0の取扱説明書(JavaScript)'
+excerpt: 'JavaScriptにおいて0とマイナス0はほぼ同じですが、文字列にすると符号までも出力されてしまいます。マイナス0の性質や、マイナスを取り除く方法などを解説します。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/negative-zero.png'
+coverImageAlt: 'JavaScriptカテゴリの「マイナス0の取扱説明書」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-23 17:32'
+updated: '2020-11-23 17:32'
+---
+
+JavaScriptには`0`と`-0`があります。これは[IEEE 754](https://ja.wikipedia.org/wiki/IEEE_754%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E8%B2%A0%E3%81%AE%E3%82%BC%E3%83%AD)に沿ったものです。
+
+```js
+console.log(-0); // -0;
+```
+
+## マイナス0の性質
+
+- `-0 === 0`の結果は`true`
+- `-0 < 0`と`-0 > 0`の結果は`false`
+- `-0 + 0`の結果は`0`、マイナスが取り除かれます
+- `Math.abs(-0)`の結果も`0`
+- `Math.ceil(-0)`と`Math.round(-0)`と`Math.floor(-0)`の結果も`0`
+- `Math.cos(-0)`の結果は`1`、`Math.cos(0)`と同じです
+- `Math.sign(-0)`の結果は`-0`、元の木阿弥です
+- `Object.is(-0, 0)`の結果は`false`、これでマイナスの有無を区別できますが、IE非対応です
+- `1 / -0`の結果は`-Infinity`、`1 / 0`であれば`Infinity`なので区別できます
+- `(-0).toString()`と`(-0).toPrecision(1)`と`(-0).toFixed(0)`の結果は`"0"`
+- `String(-0)`と`-0+''`とテンプレート文字列の`${-0}`の結果は`"0"`
+
+## どうするとマイナス0になるか
+
+以下の式の結果は全て`-0`になります。
+
+- `+(-0)`
+- `+'-0'`
+- `Number('-0')`
+- `-1 / Infinity`
+- `-0.0`
+- `-0 - 0`
+- `0 * -1`
+- `-0 % 1`
+- `Math.sign(-0)`
+- `Math.trunc(-0)`
+- `Math.trunc(-0.99)`
+- `Math.ceil(-0)`
+- `Math.ceil(-0.99)`
+
+---
+
+参考リンク
+
+- [高速で質もよい疑似乱数生成アルゴリズム xorshift(xor128) | 株式会社ヘキサドライブ](https://hexadrive.jp/hexablog/program/24667/)

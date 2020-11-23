@@ -1,0 +1,47 @@
+---
+title: 'CSSのスペース区切り・コンマ区切り・スラッシュ区切り'
+excerpt: 'CSSで使われる区切り記号には、HTMLと違ってスラッシュもあります。'
+category: 'CSS'
+coverImage: '/asset/ogp/css-delimiter.png'
+coverImageAlt: 'CSSカテゴリの「スペース区切り・コンマ区切り・スラッシュ区切り」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-19 23:55'
+updated: '2020-11-19 23:55'
+---
+
+## 半角スペース区切り
+
+- ショートハンド記法
+    - 例 `margin: 16px 0 64px;`
+    - 例 `border: 1px solid #555;`
+- `@-`規則での条件指定
+    - 例 `@media screen and (min-width:480px) { ... }`
+    - 例 `@supports not (display: grid) { ... }`
+
+## コンマ区切り
+
+- `rgb`や`max`などの[関数表記法](https://developer.mozilla.org/ja/docs/Web/CSS/CSS_Functions)
+    - 例 `color: rgb(240, 255, 248);`
+- フォントの指定
+    - 例 `font-family: "Open Sans", sans-serif;`
+- セレクタで、複数に同じスタイルを適用したい時
+    - 例 `l_flex, l_inline_flex { align-items: center; }`
+
+## スラッシュ区切り
+
+ショートハンドの一部は、スラッシュで区切ります。
+
+- `background`プロパティで背景サイズを指定する時
+    - 背景の位置指定の直後にスラッシュ、その直後に背景サイズ指定をします
+    - 例 `background: repeat-y center / 30% url(/favicon.ico);`
+- `font`プロパティで行間を指定する時
+    - フォントサイズ指定の直後にスラッシュ、その直後に行間指定をします
+    - 例 `font: 18px / 2 "Helvetica Neue", Arial, sans-serif;`
+
+---
+
+参考リンク
+
+- [background - CSS: カスケーディングスタイルシート | MDN](https://developer.mozilla.org/ja/docs/Web/CSS/background)
+- [font - CSS: カスケーディングスタイルシート | MDN](https://developer.mozilla.org/ja/docs/Web/CSS/font)

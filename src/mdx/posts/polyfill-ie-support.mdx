@@ -1,0 +1,45 @@
+---
+title: 'IE対応するときに役立つJavaScript製ポリフィル'
+excerpt: '他のブラウザに比べてサポートする機能のラインナップで劣るIEのために、幾つもの機能補完ポリフィルが公開されています。IE対応から逃げられない場合に役立ちます。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/polyfill-ie-support.png'
+coverImageAlt: 'JavaScriptカテゴリの「IE対応するときに役立つポリフィル」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-23 23:52'
+updated: '2020-11-23 23:52'
+---
+
+## Promise Polyfill
+
+[Promise Polyfillのダウンロード](https://github.com/taylorhakes/promise-polyfill/tree/master/dist)
+
+モダンな非同期処理である`Promise`をIEでも使えるようにするためのポリフィルです。
+
+## html5shiv.js
+
+[html5shiv.jsのダウンロード](https://github.com/aFarkas/html5shiv/tree/master/dist)
+
+HTML5の要素をIE6~8でも使えるようにするためのポリフィルです。
+
+### html5shiv-printshiv.js
+
+[html5shiv-printshiv.jsのダウンロード](https://github.com/aFarkas/html5shiv/tree/master/dist)
+
+`html5shiv.js`の上位互換で、同じ所からダウンロードできます。IE6~8でWebページを印刷する時でも、HTML5要素をうまくスタイリングしてくれます。
+
+## respond.js
+
+[respond.jsのダウンロード](https://github.com/scottjehl/Respond/tree/master/dest)
+
+CSS3のメディアクエリの内、以下の項目に限ってIE6~8でも使えるようにします。
+
+- `screen`や`print`などのメディアタイプ
+- `max-width`
+- `min-width`
+
+### respond.matchmedia.addListener.src.js
+
+[respond.jsのダウンロード](https://github.com/scottjehl/Respond/tree/master/dest)
+
+`respond.js`と同じ所からダウンロードできる、`window.matchMedia`のポリフィルです。

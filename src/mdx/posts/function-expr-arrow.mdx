@@ -1,0 +1,147 @@
+---
+title: 'functionとアロー関数の共通点と違い'
+excerpt: '対応ブラウザやthisキーワードの扱いの違いは、JavaScriptに慣れた方であれば知っていると思いますが、そのほかにも意外な違いがあります。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/function-expr-arrow.png'
+coverImageAlt: 'JavaScriptカテゴリの「functionとアロー関数の共通点と違い」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-11-21 20:15'
+updated: '2020-11-21 20:15'
+---
+
+## `this`キーワードの扱いの違い
+
+コールバックで呼び出された場合の`this`は、`function`の場合呼び出し元のオブジェクトを指します。
+
+```js
+elem.addEventListener('click', function () {
+    console.log(this); // 呼び出し元のelem
+});
+elem.addEventListener('click', () => {
+    console.log(this); // グローバルのwindow
+});
+```
+
+アロー関数の場合は、呼び出し元のオブジェクトが属するスコープでの`this`と同じになります。
+
+```js
+console.log(this, 'スコープA');
+const obj = {
+    price: 240,
+    getWithFnExpr: function () {
+        console.log(this); // objの中身
+    },
+    getWithArrowFn: () => {
+        console.log(this, 'スコープA'); // この場合はグローバルのwindow
+    }
+};
+obj.getWithFnExpr();
+obj.getWithArrowFn();
+```
+
+## apply, call, bindでの違い
+
+`function`ではいずれも機能します。
+
+```js
+fn = function () { console.log(this) };
+fn(); // グローバルwindow
+fn.apply(navigator); // navigatorオブジェクト
+fn.call(navigator); // navigatorオブジェクト
+fn.bind(navigator)(); // navigatorオブジェクト
+```
+
+アロー関数では`this`の束縛ができません。
+
+```js
+fn = () => console.log(this);
+fn(); // グローバルwindow
+fn.apply(navigator); // グローバルwindow
+fn.call(navigator); // グローバルwindow
+fn.bind(navigator)(); // グローバルwindow
+```
+
+## 対応ブラウザの違い
+
+`function`はどのブラウザでも対応しています。
+
+アロー関数は、IEの全バージョンやMac/iOS Safariのバージョン10より前は対応していません。MacやiOSはアップデートしてくれるユーザーが多いことを考えると、IEのサポートを切るだけでアロー関数を"そのまま"使えるようになると言えます。
+
+## 即時関数の書き方の違い
+
+`function`での即時関数は、2通りの書き方ができます。
+
+```js
+(function(){ /* 呼び出し用かっこを外側 */ })();
+
+(function(){ /* 呼び出し用かっこを内側 */ }());
+```
+
+アロー即時関数は、かっこを外側にしか書けません。
+
+```js
+(() => { /* 呼び出し用かっこを外側 */ })();
+
+(() => { /* 呼び出し用かっこを内側 ... エラー */ }());
+```
+
+エラーにハマらないように、`function`でもかっこは外側に書くことをお勧めします。
+
+## 共通するasync-awaitの許容
+
+`function`式でもアロー関数でも、`async`と`await`が使えます。
+
+```js
+(async function (duration) {
+  await new Promise(function (resolve) {window.setTimeout(resolve, duration)});
+  console.log('function文を使った遅延'); // 約500ミリ秒後に出力
+})(500);
+
+(async duration => {
+  await new Promise(resolve => {setTimeout(resolve, duration)});
+  console.log('アロー関数を使った遅延'); // 約500ミリ秒後に出力
+})(500);
+```
+
+## 共通するデフォルト引数の許容
+
+`function`式でもアロー関数でも、引数のデフォルト値を設定できます。アロー関数の場合、引数が一つだけでもかっこを省略できません。
+
+```js
+(function (param = 6) {
+    console.log(param); // 6
+})(/* 引数を設定しない */);
+
+((param = 6) => {
+    console.log(param); // 6
+})(/* 引数を設定しない */);
+```
+
+## 共通する引数での分割代入
+
+`function`式でもアロー関数でも、引数での分割代入ができます。
+
+```js
+(function ({person = {name: '佐藤'}, pref = '東京'} = {}) {
+    console.log(person); // {name: '佐藤'}
+    console.log(pref); // "東京"
+})(/* 引数を設定しない */);
+(function ([foo = 'bar'] = []) {
+    console.log(foo); // "bar"
+})(/* 引数を設定しない */);
+
+(({person = {name: '佐藤'}, pref = '東京'} = {}) => {
+    console.log(person); // {name: '佐藤'}
+    console.log(pref); // "東京"
+})(/* 引数を設定しない */);
+(([foo = 'bar'] = []) => {
+    console.log(foo); // "bar"
+})(/* 引数を設定しない */);
+```
+
+---
+
+参考リンク
+
+- [Arrow functions | Can I Use](https://caniuse.com/arrow-functions)
