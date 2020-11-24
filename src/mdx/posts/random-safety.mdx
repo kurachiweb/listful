@@ -7,7 +7,7 @@ coverImageAlt: 'JavaScriptカテゴリの「乱数生成の罠」'
 coverImageWidth: 1200
 coverImageHeight: 630
 published: '2020-11-23 12:32'
-updated: '2020-11-23 12:32'
+updated: '2020-11-24 13:40'
 ---
 
 ## 乱数の生成方法
@@ -101,94 +101,21 @@ console.log(randomSelect(pattern)); // "seven"
 
 ### 対応策
 
-#### サーバーサイドで実装
-
-- 良い点
-    - 基本的に実装コードをユーザーが読むことはできないので、安全性が高い
-    - 実装によっては優秀な乱数生成ライブラリを使える
-- 悪い点
-    - 学習コストや実装コストが少々高い
-    - 乱数の質は実装もしくはライブラリ依存
-
-乱数生成だけサーバーサイドでして、その他の処理をクライアントサイドで行うと、処理中にサーバーからのレスポンスを待たなければいけないので、処理全体をサーバーサイドでしましょう。
-
-Node.jsでは、以下のコードで乱数を生成できます。
+`Object.freeze()`を使うだけで、上書きを阻止できます。
 
 ```js
-const crypto = require('crypto');
+Object.freeze(Math);
+Math.random = () => 0.1;
+console.log(Math.random()); // 0.1882729280869213
+console.log(Math.random()); // 0.5474281169626771
 
-const byteLength = 6; // 0 ~ 256^6-1 の範囲になる
-const randomVal = crypto.randomBytes(byteLength).toString('hex');
-console.log(randomVal); // "8eb3cd4a26c7"
-const randomNum = parseInt(randomVal, 16);
-console.log(randomNum); // 156902894479047
-```
-
-#### 乱数生成関数を自作する
-
-- 良い点
-    - 実装コストが低い
-    - 軽量で高速
-- 悪い点
-    - 処理のためのコード量が増える
-    - 乱数の質は選んだアルゴリズム依存
-
-以下は[xorshift128](https://hazm.at/mox/algorithm/pseudorandom-number/xorshift-rngs/index.html)というアルゴリズムのJavaScript実装です。
-
-```js
-(function () {
-  // グローバルスコープから改ざんできないように既存の関数の中で定義するか、constを使う
-  var RandomXorshift = function (seed) {
-    'use strict';
-    // この関数はIE8でも動く
-    if (typeof seed !== 'number') {
-      // 実行毎に変化し、かつ予測されにくい値をシード値にする
-      seed = Math.floor((Date.now() % performance.now()) * 1e8);
-    }
-    var a = 123456789;
-    var b = 362436069;
-    var c = 521288629;
-    var d = seed;
-    this.get = function (min, max) {
-      if (typeof min !== 'number') min = 0;
-      if (typeof max !== 'number') max = 1e8;
-      var e = a ^ (a << 11);
-      a = b;
-      b = c;
-      c = d;
-      d = d ^ (d >>> 19) ^ (e ^ (e >>> 8));
-      return Math.abs(d) % (max - min) + min;
-    };
-  };
-
-  const rand = new RandomXorshift();
-  console.log(rand.get()); // 14806996
-  console.log(rand.get()); // 75461042
-  console.log(rand.get()); // 32868244
-  console.log(rand.get()); // 60297450
-  console.log(rand.get()); // 29882806
-  console.log(rand.get()); // 12809753
-})();
-```
-
-クライアントサイドですが、`Math.random`も`crypto.getRandomValues`も使っていないので、攻撃に強いのではないのでしょうか。先程のスロットゲームに組み込むと、以下のような使い方になります。
-
-```js
-// xorshift実装関数は省略
-const pattern = ['seven', 'flower', 'cherry', 'bell', 'flower', 'cherry', 'bell'];
-const rand = new RandomXorshift();
-const randomSelect = function (patt) {
-    const randomIndex = rand.get(0, patt.length);
-    return patt[randomIndex];
+Object.freeze(crypto);
+crypto.getRandomValues = typedArray => {
+    const length = typedArray.length;
+    for (let i = 0; i < length; i++) typedArray[i] = 0;
+    return typedArray;
 };
-console.log(randomSelect(pattern)); // "flower"
-console.log(randomSelect(pattern)); // "seven"
-console.log(randomSelect(pattern)); // "cherry"
-console.log(randomSelect(pattern)); // "cherry"
+console.log(crypto.getRandomValues(new Uint32Array(1))[0]); // 1444306355
+console.log(crypto.getRandomValues(new Uint32Array(1))[0]); // 3743350832
+console.log(crypto.getRandomValues(new Uint32Array(1))[0]); // 2682429701
 ```
-
----
-
-参考リンク
-
-- [高速で質もよい疑似乱数生成アルゴリズム xorshift(xor128) | 株式会社ヘキサドライブ](https://hexadrive.jp/hexablog/program/24667/)
