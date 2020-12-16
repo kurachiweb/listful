@@ -4,6 +4,6 @@ package.json
 package-lock.json
 public
 api/socks.js
-node-modules
+node_modules
 *.md
 *.mdx
