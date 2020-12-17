@@ -1,0 +1,70 @@
+---
+title: '特定のキー入力をトリガーにしたい'
+excerpt: 'Webアプリケーションに付けたいキーボード操作機能。いざ取り掛かると、ブラウザごとの違いやキーボードの違いに左右されてしまいます。'
+category: 'JavaScript'
+coverImage: '/asset/ogp/keyboard-event-trigger.png'
+coverImageAlt: 'JavaScriptカテゴリの「特定のキー入力をトリガーにしたい」'
+coverImageWidth: 1200
+coverImageHeight: 630
+published: '2020-12-17 9:47'
+updated: '2020-12-17 9:47'
+---
+
+## 作ったWebアプリに...
+
+例えば自作のマークダウンメモアプリに、ショートカットキーで操作する機能を付けたくなったとします。
+
+「Windowsなら`Ctrl + /`を、Macなら`Control + /`を押して、"マークダウン記法の一覧"を表示できるようにしたい。」
+
+## イベントの取得
+
+何かキーボードのキーが押されたことを検知するのは、とても簡単です。
+
+```js
+document.addEventListener('keydown', event => {
+    // 変数eventの中身はKeyboardEventオブジェクト
+    console.log(event);
+});
+```
+
+ビューポート内にフォーカスが当たっていれば取得できます。
+
+### キーの識別に使えるKeyboardEventのプロパティ
+
+- key : ShiftキーやOptionキーによる変化を考慮して、キーを現す文字列を返します。
+- code : 押されたキーそのものを現す文字列を返します。ただしJIS配列のキーボードでは、`[`の入力に対し`"BracketRight"`が出力されるなど直感的ではありません。今回はこれを使います。
+- keyCode : 非推奨。キーを現す一意な数値を返します。
+- which : 非推奨。keyCodeと同じ値が出力されます。
+- charCode : 非推奨。2020年12月17日時点で、ChromeやFirefox、Mac Safariではどのキーを押しても0が出力されます。
+
+## どのキーが押されたかを知る
+
+手元にApple Keyboard A1843 EMC 3138(JIS配列)がありましたので、どのキーを押してどんな出力が得られるのかを調べてみました。
+
+![キーボードの各キーによって取得できるコード](/asset/keyboard-A1843-EMC-3138.svg)
+
+[KeyboardEvent.code](https://developer.mozilla.org/ja/docs/Web/API/KeyboardEvent/code)の取得結果は以下のSVGファイルに記してあります。
+
+[code一覧を見る(外部サイト)](https://listful.vercel.app/asset/keyboard-A1843-EMC-3138.svg)
+
+今回の場合は/(スラッシュ)なので、`event.code === "Slash"`で判定ができます。
+
+さらにWindowsなら`Ctrl`キーを、Macなら`Control`キーを共に押していれば`event.ctrlKey`がtrueになるため、それも調べます。
+
+## 試してみる
+
+```js
+document.addEventListener('keydown', event => {
+    if (event.ctrlKey && event.code === 'Slash') {
+        // 処理を書く
+        console.log('control + / です');
+    }
+});
+```
+
+---
+
+参考リンク
+
+- [keyCode が deprecated になってた | N E R](http://var.blog.jp/archives/70803410.html)
+- [KeyboardEvent - Web API | MDN](https://developer.mozilla.org/ja/docs/Web/API/KeyboardEvent)
